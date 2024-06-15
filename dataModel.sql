@@ -15,11 +15,11 @@ CREATE TABLE 'users' (
 );
 
 -- Table Name: category
-	CREATE TABLE `category` (
- `category_id` bigint(20) NOT NULL,
- `category_name` varchar(500) NOT NULL,
- `category_created_by` bigint(20) NOT NULL,
- `category_created_at` timestamp NOT NULL DEFAULT current_timestamp(),
- `category_updated_by` bigint(20) NOT NULL,
- `category_updated_at` timestamp NOT NULL DEFAULT current_timestamp()
+	CREATE TABLE 'category' (
+ 'category_id' bigint(20) NOT NULL,
+ 'category_name' varchar(500) NOT NULL,
+ 'category_created_by' bigint(20) NOT NULL,
+ 'category_created_at' timestamp NOT NULL DEFAULT current_timestamp(),
+ 'category_updated_by' bigint(20) NOT NULL,
+ 'category_updated_at' timestamp NOT NULL DEFAULT current_timestamp()
 )

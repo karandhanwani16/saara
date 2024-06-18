@@ -36,8 +36,9 @@ $data = array();
 while ($row = $result->fetch_assoc()) {
 
     $sub_array = array();
-    // $sub_array[] = "<a href='singleproduct.php?id=" . $row['product_id'] . "' class='select-btn'>Select</a>";
     $sub_array[] = $row['category_id'];
+    $sub_array[] = "<a href='singleCategory.php?id=" . $row['category_id'] . "' class='select-btn'>Select</a>";
+    $sub_array[] = "<div class='btn delete-btn' data-id='" . $row["category_id"] . "'>Delete</div>";
     $sub_array[] = $row['category_name'];
     $data[] = $sub_array;
 }

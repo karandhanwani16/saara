@@ -23,3 +23,12 @@ CREATE TABLE 'users' (
  'category_updated_by' bigint(20) NOT NULL,
  'category_updated_at' timestamp NOT NULL DEFAULT current_timestamp()
 )
+
+--Table Name: logs
+CREATE TABLE logs (
+ log_timestamp timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+ action_type varchar(200) NOT NULL,
+ log_action varchar(200) NOT NULL,
+ log_user varchar(200) NOT NULL,
+ log_description varchar(7900) NOT NULL
+)

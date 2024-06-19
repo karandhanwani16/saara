@@ -12,13 +12,14 @@ $user_id = $_SESSION["user_id"];
 $finalObject = new \stdClass();
 
 //Step 1 : getting all the variables
-$name = addslashes($data["name"]);
+$name = htmlspecialchars($data["name"]);
+$id = $data["id"];
 
 
 try {
     if (!checkCategoryExist($name, $con)) {
-        $maximumCategoryId = getCurrentId("category_id", "category", $con);
-        $sql = "insert into category values(" . $maximumCategoryId . ",'" . $name . "',".$user_id.",'".getCurrentTimestamp()."',".$user_id.",'".getCurrentTimestamp()."')";
+        $sql = "update category set category_name = '" . $name . "',category_updated_by=" . $user_id . ",category_updated_at='" . getCurrentTimestamp() . "' where category_id = " . $id;
+        
         if (mysqli_query($con, $sql)) {
             $finalObject->status = "success";
             $finalObject->message = "Category upload successfully!";
@@ -34,7 +35,6 @@ try {
 
 $response = json_encode($finalObject);
 echo $response;
-
 
 function checkCategoryExist($name, $con)
 {

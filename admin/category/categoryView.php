@@ -29,6 +29,8 @@
                     <thead>
                         <tr>
                             <th>ID</th>
+                            <th>Select</th>
+                            <th>Delete</th>
                             <th>Name</th>
                         </tr>
                     </thead>
@@ -40,6 +42,7 @@
 
 
     <script src="../scripts/helperFunctions.js"></script>
+
     <script type="text/javascript" language="javascript">
         $(document).ready(function () {
 
@@ -50,38 +53,45 @@
                 "ajax": {
                     url: "services/getCategoryData.php",
                     type: "POST"
+                },
+                "drawCallback": function (oSettings) {
+
+                    // Delete Buttons Functionality 
+                    let deleteBtns = document.querySelectorAll(".delete-btn");
+                    deleteBtns.forEach(deleteBtn => {
+                        deleteBtn.addEventListener("click", e => {
+                            let id = deleteBtn.attributes["data-id"].value;
+                            let deleteConfirm = confirm("Are you sure you want to delete?");
+                            if (deleteConfirm) {
+                                deleteProduct(deleteBtn, id);
+                            }
+                        });
+                    });
+
                 }
             });
 
-            $('#sample_data').on('draw.dt', function () {
-                $('#sample_data').Tabledit({
-                    url: 'services/categoryAction.php',
-                    dataType: 'json',
-                    columns: {
-                        identifier: [0, 'category_id'],
-                        editable: [
-                            [1, 'category_name']
-                        ]
-                    },
-                    restoreButton: false,
-                    onSuccess: function (data, textStatus, jqXHR) {
-                        if (data.warning == "Category already exist") {
-                            showAlert(data.warning, "warning");
-                        }
-                        if (data.error) {
-                            showAlert(data.error, "error");
-                        }
-                        if (data.action == 'delete') {
-                            $('#' + data.id).remove();
+            function deleteProduct(btn, id) {
+                var xmlhttp = new XMLHttpRequest();
+                xmlhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        var result = JSON.parse(this.responseText);
+                        removeLoadingStateWithText(btn, "Delete");
+                        showAlert(result.message, result.status);
+                        if (result.status == "success") {
+                            $('#' + result.id).remove();
                             $('#sample_data').DataTable().ajax.reload();
                         }
                     }
-                });
-            });
+                };
+                addLoadingStateWithText(btn, "Deleting...");
+                xmlhttp.open("POST", `services/deleteCategory.php`, true);
+                xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                xmlhttp.send("id=" + id);
+            }
 
         });
     </script>
-
 
 </body>
 

@@ -65,3 +65,16 @@ create table `brands` (
     `brand_updated_by` bigint(20) NOT NULL,
     `brand_updated_at` timestamp NOT NULL DEFAULT current_timestamp()
 );
+
+--Table Name: supplier
+CREATE TABLE `supplier` (
+ `supplier_id` bigint(20) NOT NULL,
+ `supplier_name` varchar(500) NOT NULL,
+ `supplier_location` varchar(500) NOT NULL,
+ `supplier_mobile` varchar(500) NOT NULL,
+ `supplier_description` varchar(500) NOT NULL,
+ `supplier_created_by` bigint(20) NOT NULL,
+ `supplier_created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+ `supplier_updated_by` bigint(20) NOT NULL,
+ `supplier_updated_at` timestamp NOT NULL DEFAULT current_timestamp()
+)

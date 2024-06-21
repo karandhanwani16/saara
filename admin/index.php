@@ -50,9 +50,15 @@ $currentEmail = getCurrentEmail($user_id, $con);
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a class="menu-item-main f-link mainactive" data-link="./products/products.php">
+                    <a class="menu-item-main f-link" data-link="./products/products.php">
                         <img src="assets/icons/dashboard.svg" alt="">
                         <div class="list-item-value">Products</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a class="menu-item-main f-link" data-link="./suppliers/suppliers.php">
+                        <img src="assets/icons/dashboard.svg" alt="">
+                        <div class="list-item-value">Suppliers</div>
                     </a>
                 </li>
 

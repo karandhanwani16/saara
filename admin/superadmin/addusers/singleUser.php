@@ -67,7 +67,7 @@ function getUserData($userId, $con)
             <!-- inp group end -->
             <div class="inp-group">
                 <div class="inp-label">User Password</div>
-                <input type="text" value="" class="inp required" id="txtuserpassword"
+                <input type="password" value="" class="inp required" id="txtuserpassword"
                     placeholder="User Password" data-id="txtuserpassword" />
                 <div class="error-text" data-id="txtuserpassword">Cannot leave this field blank</div>
             </div>

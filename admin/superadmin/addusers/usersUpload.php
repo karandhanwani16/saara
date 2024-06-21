@@ -75,7 +75,7 @@ include ("../../services/helperFunctions.php");
         <div class="inp-row">
             <div class="inp-group">
                 <div class="inp-label">User Password</div>
-                <input type="text" class="inp required" id="txtuserpassword" placeholder="User Last Name"
+                <input type="password" class="inp required" id="txtuserpassword" placeholder="User Last Name"
                     data-id="txtuserpassword" />
                 <div class="error-text" data-id="txtuserpassword">Cannot leave this field blank</div>
             </div>

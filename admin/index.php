@@ -49,6 +49,14 @@ $currentEmail = getCurrentEmail($user_id, $con);
                         <div class="list-item-value">Category</div>
                     </a>
                 </li>
+
+                <li class="menu-item">
+                    <a class="menu-item-main f-link" data-link="./brand/brand.php">
+                        <img src="assets/icons/dashboard.svg" alt="">
+                        <div class="list-item-value">Brand</div>
+                    </a>
+                </li>
+
                 <li class="menu-item">
                     <a class="menu-item-main f-link" data-link="./products/products.php">
                         <img src="assets/icons/dashboard.svg" alt="">

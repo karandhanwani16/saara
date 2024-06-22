@@ -22,10 +22,10 @@
     <div class="alert--cont">
     </div>
     <div class="panel panel-default">
-        <div class="panel-heading">Category</div>
+        <div class="panel-heading">Brand</div>
         <div class="panel-body">
             <div class="table-responsive">
-                <table id="sample_data" class="table table-bordered table-striped">
+                <table id="brand_data" class="table table-bordered table-striped">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -46,12 +46,12 @@
     <script type="text/javascript" language="javascript">
         $(document).ready(function () {
 
-            var dataTable = $('#sample_data').DataTable({
+            var dataTable = $('#brand_data').DataTable({
                 "processing": true,
                 "serverSide": true,
                 "order": [],
                 "ajax": {
-                    url: "services/getCategoryData.php",
+                    url: "services/getBrandData.php",
                     type: "POST"
                 },
                 "drawCallback": function (oSettings) {
@@ -61,7 +61,7 @@
                     deleteBtns.forEach(deleteBtn => {
                         deleteBtn.addEventListener("click", e => {
                             let id = deleteBtn.attributes["data-id"].value;
-                            let deleteConfirm = confirm("Are you sure you want to delete");
+                            let deleteConfirm = confirm("Are you sure you want to delete?");
                             if (deleteConfirm) {
                                 deleteProduct(deleteBtn, id);
                             }
@@ -80,12 +80,12 @@
                         showAlert(result.message, result.status);
                         if (result.status == "success") {
                             $('#' + result.id).remove();
-                            $('#sample_data').DataTable().ajax.reload();
+                            $('#brand_data').DataTable().ajax.reload();
                         }
                     }
                 };
                 addLoadingStateWithText(btn, "Deleting...");
-                xmlhttp.open("POST", `services/deleteCategory.php`, true);
+                xmlhttp.open("POST", `services/deleteBrand.php`, true);
                 xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
                 xmlhttp.send("id=" + id);
             }

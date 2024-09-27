@@ -77,7 +77,8 @@
 }
 
 .inp,
-.ddl, .dropdown-toggle {
+.ddl,
+.dropdown-toggle {
     width: 100% !important;
     font-weight: 600;
     font-size: 1.2rem;
@@ -185,10 +186,10 @@ form {
 }
 
 .btn {
-    font-size: 1rem;
+    font-size: 0.8rem;
     display: inline-block;
-    padding: 8px 20px;
-    border-radius: 7.5px;
+    padding: 6px 20px;
+    border-radius: 5px;
     color: var(--white-color);
 }
 
@@ -215,7 +216,7 @@ form {
     font-weight: 500;
     letter-spacing: 0.5px;
     border-radius: 10px;
-    max-height: 40px;
+    /* max-height: 40px; */
     overflow: hidden;
     margin-bottom: 12px;
     position: fixed;
@@ -239,11 +240,7 @@ form {
     background: #fffbe8;
 }
 
-@media only screen and (max-width: 940px) {
-    .inp-row {
-        width: 100%;
-    }
-}
+
 
 
 /* popup start */
@@ -389,7 +386,7 @@ form {
 }
 
 .row-5 .inp-group {
-    width: calc(20% - 24px) !important;
+    width: calc(20% - 24px);
     margin-right: 0px !important;
 }
 
@@ -440,4 +437,23 @@ form {
 .controls-row input {
     background-color: #fff !important;
     border: 2px solid #444;
+}
+
+
+@media only screen and (max-width: 940px) {
+    .inp-row {
+        width: 100%;
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    .row-5 {
+        width: 100% !important;
+        flex-direction: column !important;
+    }
+
+    .row-5 .inp-group {
+        width: 100% !important;
+    }
+
 }

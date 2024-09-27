@@ -1,0 +1,363 @@
+:root {
+    --product-height: 200px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 12px;
+    background-color: #f0f0f0;
+}
+
+.container {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+h1 {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.product-list {
+    height: 75vh;
+    overflow-y: auto;
+    margin-bottom: 20px;
+    padding-right: 2px;
+    padding-bottom: 80px;
+}
+
+#customerDetails,#paymentDetails{
+    height: 75vh !important;
+    overflow-y: auto;
+    padding-bottom: 48px;
+}
+
+.product-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.product-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.product-list::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 3px;
+}
+
+.product-list::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.product-card {
+    background-color: transparent;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    touch-action: pan-y;
+    position: relative;
+    height: var(--product-height);
+}
+
+.product-card-content {
+    user-select: none;
+    cursor: grab;
+    padding: 15px;
+    transition: transform 0.3s ease-out;
+    background-color: #fff;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: var(--product-height);
+    width: 100%;
+    border-radius: 8px;
+}
+
+.product-name {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.category {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.details {
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.product-total {
+    font-size: 16px;
+    font-weight: bold;
+    text-align: right;
+    margin-top: 10px;
+}
+
+.action-button {
+    position: absolute;
+    top: 0;
+    width: 140px;
+    z-index: -1;
+    height: var(--product-height);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.edit-button {
+    right: 0 !important;
+    background-color: #3498db;
+}
+
+.delete-button {
+    left: 0 !important;
+    background-color: #e74c3c;
+}
+
+.btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 12px 0;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.btn img {
+    margin-right: 10px;
+    height: 18px;
+}
+
+.btn-add {
+    background-color: #333;
+    color: #fff;
+}
+
+.btn-finalize {
+    background-color: #4caf50;
+    color: #fff;
+}
+
+.btn-download {
+    background-color: #EC1919;
+    color: #fff;
+}
+
+.btn-back {
+    background-color: #fff;
+    color: #222;
+}
+
+
+
+/*  Customer Details */
+
+#customerDetails label,
+#paymentDetails label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #333;
+}
+
+#customerDetails input,
+#customerDetails select,
+#paymentDetails input,
+#paymentDetails select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    box-sizing: border-box;
+    background-color: white;
+}
+
+#customerDetails input::placeholder,
+#customerDetails select::placeholder,
+#paymentDetails input::placeholder,
+#paymentDetails select::placeholder {
+    color: #999;
+}
+
+
+/* Payment Details */
+
+
+.payment-summary,
+.order-summary {
+    background-color: #eaeaea;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.payment-row,
+.order-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.payment-row:last-child,
+.order-row:last-child {
+    margin-bottom: 0;
+    font-weight: bold;
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+
+.order-summary-btns {
+    width: calc(100% - 40px);
+    position: fixed;
+    bottom: 16px;
+}
+
+.error-cont .error {
+    color: red;
+    font-size: 14px;
+    margin-bottom: 5px;
+    padding: 6px 16px;
+    border-radius: 8px;
+    background-color: #f8d7da;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.error {
+    transition: all 0.3s ease-in-out;
+}
+
+
+/* Edit Popup */
+/* The switch - the box around the slider */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 64px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* The slider */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    height: 34px;
+    top: 24px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    top:4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked+.slider {
+    background-color: #2196F3;
+}
+
+input:focus+.slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked+.slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+
+.manual-entry-btn {
+    background-color: #333;
+    color: #fff;
+    padding: 12px 0;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.manual-entry-cont .row{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-top: 20px;
+}
+.manual-entry-cont p{
+    font-size: 18px;
+    font-weight: 600;
+}
+.manual-entry-cont input{
+    width: 70% !important;
+}
+
+.manual-entry-cont button{
+    width: 25% !important;
+}
+
+.manual-btn{
+    background-color: #333;
+    color: #fff;
+    padding: 10px 0;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}

@@ -208,3 +208,44 @@ function loadDataIntoDdlGeneral(data, dropdownList, selectEmptyText, type, selec
         });
     }
 }
+
+
+
+
+// load data from db to dropdown
+
+function loadDropdownData(idColumn, labelColumn, tableName, dropdownListElement, selectEmptyText, selectedValue, conditionalColumnName = "", conditionalColumnValue = "", serviceFilePath) {
+
+    let xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            let { data } = JSON.parse(xhttp.responseText);
+            loadDataIntoDdlGeneral(data, dropdownListElement, selectEmptyText, selectedValue);
+        }
+    };
+    xhttp.open("POST", serviceFilePath, true);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.send("tableName=" + tableName + "&idColumn=" + idColumn + "&labelColumn=" + labelColumn + "&conditionalColumnName=" + conditionalColumnName + "&conditionalColumnValue=" + conditionalColumnValue);
+}
+
+
+function loadDataIntoDdlGeneral(data, dropdownListElement, selectEmptyText, selectedValue) {
+
+
+    dropdownListElement.innerHTML = "<option value=''>" + selectEmptyText + "</option>";
+
+    if (selectedValue !== "") {
+        data.forEach(entry => {
+            if (entry["id"] == selectedValue) {
+                dropdownListElement.innerHTML += `<option selected='true' value="${entry.id}">${entry.label}</option>`;
+            } else {
+                dropdownListElement.innerHTML += `<option value="${entry.id}">${entry.label}</option>`;
+            }
+        });
+    } else {
+        data.forEach(entry => {
+            dropdownListElement.innerHTML += `<option value="${entry.id}">${entry.label}</option>`;
+        });
+    }
+
+}

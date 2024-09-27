@@ -302,23 +302,6 @@ function getUserName($con)
     return $userName;
 }
 
-function getUserNameFromUserId($user_id, $con)
-{
-    $name = "";
-    try {
-        $query = "select user_first_name,user_last_name from users where user_id = " . $user_id;
-
-        $result = $con->query($query);
-        if ($result->num_rows > 0) {
-            $row = $result->fetch_assoc();
-            $name = $row["user_first_name"] . " " . $row["user_last_name"];
-        }
-
-    } catch (Exception $e) {
-        $name = "";
-    }
-    return $name;
-}
 
 
 function dateDiff($date1)
@@ -531,6 +514,35 @@ function checkUpdateExist($name, $id, $table, $con)
     }
     return $isExist;
 }
+
+
+
+function getImageFromBase64($image_base64)
+{
+    $result = new \stdClass();
+
+    if (preg_match('/^data:image\/(\w+);base64,/', $image_base64, $type)) {
+        $image_base64 = substr($image_base64, strpos($image_base64, ',') + 1);
+        $type = strtolower($type[1]); // jpg, png, gif
+
+        if (!in_array($type, ['jpg', 'jpeg', 'gif', 'png'])) {
+            $result->status = "error";
+        }
+        $image_base64 = str_replace(' ', '+', $image_base64);
+        $image_base64 = base64_decode($image_base64);
+        if ($image_base64 === false) {
+            $result->status = "error";
+        }
+    } else {
+        $result->status = "error";
+    }
+    $result->status = "success";
+    $result->type = $type;
+    $result->image = $image_base64;
+
+    return $result;
+}
+
 
 
 

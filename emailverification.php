@@ -36,7 +36,7 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Woodland | Email Verification</title>
+    <title>Saara | Email Verification</title>
     <link rel="stylesheet" href="style/assets.css">
     <link rel="stylesheet" href="style/signup.css">
     <link rel="stylesheet" href="style/emailverification.css">

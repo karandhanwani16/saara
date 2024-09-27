@@ -16,7 +16,7 @@ $currentEmail = getCurrentEmail($user_id, $con);
 <head runat="server">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Woodland | Admin</title>
+    <title>Saara | Admin</title>
     <link rel="stylesheet" href="style/assets.css">
     <link rel="stylesheet" href="style/main.css">
     <style>
@@ -67,6 +67,12 @@ $currentEmail = getCurrentEmail($user_id, $con);
                     <a class="menu-item-main f-link" data-link="./suppliers/suppliers.php">
                         <img src="assets/icons/dashboard.svg" alt="">
                         <div class="list-item-value">Suppliers</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a class="menu-item-main f-link" data-link="./sales/sales.php">
+                        <img src="assets/icons/dashboard.svg" alt="">
+                        <div class="list-item-value">Sales</div>
                     </a>
                 </li>
 

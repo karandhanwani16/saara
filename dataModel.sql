@@ -72,3 +72,35 @@ CREATE TABLE `brand` (
     `brand_updated_by` bigint(20) NOT NULL,
     `brand_updated_at` timestamp NOT NULL DEFAULT current_timestamp()
 )
+
+-- Table Name: sale
+
+CREATE TABLE `sales` (
+    sale_id BIGINT(20) PRIMARY KEY,
+    sale_date DATE,
+    customer_name VARCHAR(255),
+    customer_phone VARCHAR(20),
+    customer_email VARCHAR(255),
+    discount varchar(20),
+    discount_type VARCHAR(20),
+    cash_amount varchar(20),
+    upi_amount varchar(20)
+);
+
+-- Table Name: sale_items
+
+CREATE TABLE `sale_items` (
+    sale_item_id BIGINT(20) PRIMARY KEY,
+    sale_id BIGINT(20),
+    product_id BIGINT(20),
+    product_name VARCHAR(255),
+    product_price_id BIGINT(20),
+    product_price VARCHAR(20),
+    quantity INT,
+    discount VARCHAR(20),
+    total VARCHAR(20),
+    gst_percentage VARCHAR(20),
+    is_igst VARCHAR(20),
+    discount_type VARCHAR(20),
+    FOREIGN KEY (sale_id) REFERENCES sales(sale_id)
+);

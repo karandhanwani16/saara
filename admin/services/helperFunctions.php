@@ -543,6 +543,23 @@ function getImageFromBase64($image_base64)
     return $result;
 }
 
+function getUserNameFromUserId($user_id, $con)
+{
+    $name = "";
+    try {
+        $query = "select user_first_name,user_last_name from users where user_id = " . $user_id;
+
+        $result = $con->query($query);
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $name = $row["user_first_name"] . " " . $row["user_last_name"];
+        }
+
+    } catch (Exception $e) {
+        $name = "";
+    }
+    return $name;
+}
 
 
 

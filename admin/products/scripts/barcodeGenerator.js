@@ -1,22 +1,20 @@
 // Variables
-const generateBtn = document.querySelector('.generate-btn');
 const printBtn = document.querySelector('#printBtn');
 const useCodeBtn = document.querySelector('#useCodeBtn');
 
 
-generateBtn.addEventListener('click', generateBarcodeMain);
 useCodeBtn.addEventListener("click", useCodeFunc)
 printBtn.addEventListener("click", printBarcode);
 
 //  Main generate Logic
 
-function generateBarcodeMain() {
-    openPopup("generate");
+function generateBarcodeMain(sellingPrice, parlourPrice) {
+    openPopup("generate", sellingPrice, parlourPrice);
     loadScript("https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/barcodes/JsBarcode.code128.min.js", generateBarcode);
 }
 
 function generateBarcode() {
-    generatedNumber = generateBarcodeNumber(8);
+    generatedNumber = document.querySelector("#txtbarcode").value ? document.querySelector("#txtbarcode").value : generateBarcodeNumber(8);
 
     JsBarcode("#generatedBarcode", generatedNumber, {
         format: "CODE128",
@@ -68,53 +66,6 @@ function printBarcode() {
         printWindow.close();
     };
 }
-
-
-// function printBarcode() {
-//     // Get the number of copies
-//     // const numCopies = parseInt(document.querySelector("#numCopies").value, 10);
-//     const numCopies = 5;
-
-//     // Get the div element by its ID
-//     var divElement = document.querySelector(".barcode");
-//     // Get the content inside the div
-//     var divContent = divElement.innerHTML;
-
-//     // Function to create and print an iframe
-//     function printIframe(content) {
-//         // Create an iframe
-//         var printIframe = document.createElement('iframe');
-//         printIframe.style.position = 'absolute';
-//         printIframe.style.width = '0';
-//         printIframe.style.height = '0';
-//         printIframe.style.border = 'none';
-
-//         // Append the iframe to the body
-//         document.body.appendChild(printIframe);
-
-//         // Write the content to the iframe
-//         var iframeDoc = printIframe.contentWindow.document;
-//         iframeDoc.open();
-//         iframeDoc.write('<html><head><title>Print Div Content</title>');
-//         iframeDoc.write('<style>@page { size: 100mm 40mm; margin: 5mm; } body { font-family: Arial, sans-serif; }</style>');
-//         iframeDoc.write('</head><body>');
-//         iframeDoc.write(content);
-//         iframeDoc.write('</body></html>');
-//         iframeDoc.close();
-
-//         // Print the content of the iframe
-//         printIframe.contentWindow.onload = function () {
-//             printIframe.contentWindow.print();
-//             // Remove the iframe after printing
-//             document.body.removeChild(printIframe);
-//         };
-//     }
-
-//     // Print the specified number of copies
-//     for (let i = 0; i < numCopies; i++) {
-//         printIframe(divContent);
-//     }
-// }
 
 
 // Generic Functions

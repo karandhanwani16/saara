@@ -6,13 +6,13 @@ session_start();
 $user_id = $_SESSION["user_id"];
 
 
-$column = array("p.product_id", "c.category_name", "b.brand_name", "p.product_name", "p.product_barcode", "p.product_quantity", "p.product_code", "p.product_cost_price", "p.product_selling_price", "p.product_parlour_price");
+$column = array("p.product_id","c.category_name","b.brand_name","p.product_name","p.product_barcode","p.product_code","p.product_description","p.product_created_by","p.product_updated_by");
 
-$query = "select p.product_id,c.category_name,b.brand_name,p.product_name,p.product_barcode,p.product_quantity,p.product_code,p.product_cost_price,p.product_selling_price,p.product_parlour_price from products p inner join category c on p.category_id=c.category_id inner join brand b on p.brand_id=b.brand_id";
+$query = "select p.product_id,c.category_name,b.brand_name,p.product_name,p.product_barcode,p.product_code,p.product_description,p.product_created_by,p.product_updated_by from products p inner join category c on p.category_id=c.category_id inner join brand b on p.brand_id=b.brand_id";
 
 if (isset($_POST["search"]["value"])) {
     // $query .= ' where category_id like "%' . $_POST["search"]["value"] . '%" or category_name like "%' . $_POST["search"]["value"] . '%"';
-    $query .= ' where p.product_id like "%' . $_POST["search"]["value"] . '%" or p.product_name like "%' . $_POST["search"]["value"] . '%" or c.category_name like "%' . $_POST["search"]["value"] . '%" or b.brand_name like "%' . $_POST["search"]["value"] . '%" or p.product_barcode like "%' . $_POST["search"]["value"] . '%" or p.product_code like "%' . $_POST["search"]["value"] . '%" or p.product_cost_price like "%' . $_POST["search"]["value"] . '%" or p.product_selling_price like "%' . $_POST["search"]["value"] . '%" or p.product_parlour_price like "%' . $_POST["search"]["value"] . '%"';
+    $query .= ' where p.product_id like "%' . $_POST["search"]["value"] . '%" or p.product_name like "%' . $_POST["search"]["value"] . '%" or c.category_name like "%' . $_POST["search"]["value"] . '%" or b.brand_name like "%' . $_POST["search"]["value"] . '%" or p.product_barcode like "%' . $_POST["search"]["value"] . '%" or p.product_code like "%' . $_POST["search"]["value"] . '%" or p.product_description like "%' . $_POST["search"]["value"] . '%" or p.product_created_by like "%' . $_POST["search"]["value"] . '%" or p.product_updated_by like "%' . $_POST["search"]["value"] . '%"';
 }
 
 if (isset($_POST["order"])) {
@@ -30,6 +30,7 @@ $result = $con->query($query);
 $number_filter_row = $result->num_rows;
 $result = $con->query($query . $query1);
 
+// echo $query . $query1;
 
 
 $data = array();
@@ -40,16 +41,15 @@ while ($row = $result->fetch_assoc()) {
     $sub_array[] = $row['product_id'];
     $sub_array[] = "<a href='singleProduct.php?id=" . $row['product_id'] . "' class='select-btn'>Select</a>";
     $sub_array[] = "<div class='btn delete-btn' data-id='" . $row["product_id"] . "'>Delete</div>";
-    $sub_array[] = "<div class='btn print-barcode-btn' data-id='" . $row["product_id"] . "'>Print</div>";
+    // $sub_array[] = "<div class='btn print-barcode-btn' data-id='" . $row["product_id"] . "'>Print</div>";
     $sub_array[] = $row['category_name'];
     $sub_array[] = $row['brand_name'];
     $sub_array[] = $row['product_name'];
     $sub_array[] = $row['product_barcode'];
-    $sub_array[] = $row['product_quantity'];
     $sub_array[] = $row['product_code'];
-    $sub_array[] = $row['product_cost_price'];
-    $sub_array[] = $row['product_selling_price'];
-    $sub_array[] = $row['product_parlour_price'];
+    $sub_array[] = $row['product_description'];
+    $sub_array[] = getUserNameFromUserId($row['product_created_by'],$con);
+    $sub_array[] = getUserNameFromUserId($row['product_updated_by'],$con);
     $data[] = $sub_array;
 }
 

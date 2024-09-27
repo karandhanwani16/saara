@@ -1,7 +1,7 @@
 <?php
 
-include("../services/config.php");
-include("../../services/utils/generalFunctions.php");
+include ("../services/config.php");
+include ("../../services/utils/generalFunctions.php");
 session_start();
 $user_id = $_SESSION["user_id"];
 
@@ -23,21 +23,9 @@ function getProductData($productId, $con)
         $productDetails = $row;
     }
 
-
     return $productDetails;
 }
 
-function getProductPrices($productId, $con){
-    $query = "select product_prices_cost_price as costPrice,product_prices_stock as stock,product_prices_gst_percentage as gst,product_prices_selling_price as sellingPrice,product_prices_parlour_price as parlourPrice from product_prices where product_id = $productId";
-    $result = $con->query($query);
-    $prices = [];
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            $prices[] = $row;
-        }
-    }
-    return $prices;
-}
 
 
 ?>
@@ -52,7 +40,6 @@ function getProductPrices($productId, $con){
     <title>Product Upload</title>
     <link rel="stylesheet" href="../style/assets.css">
     <link rel="stylesheet" href="../style/forms.css">
-    <link rel="stylesheet" href="../style/sales.css">
     <link rel="stylesheet" href="./style/product.css">
     <link rel="stylesheet" href="./style/multiImage.css">
 
@@ -89,15 +76,6 @@ function getProductPrices($productId, $con){
             width: 40%;
         }
 
-
-        #priceStockTableBody .action-btns {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 18px;
-            flex-shrink: 0 !important;
-        }
-
         /* barcode classes end */
     </style>
 
@@ -105,7 +83,7 @@ function getProductPrices($productId, $con){
 
 <body>
 
-<div onclick="window.history.back()" class="back-btn"><img src='../assets/icons/back.svg' alt=''></div>
+    <div onclick="window.history.back()" class="back-btn"><img src='../assets/icons/back.svg' alt=''></div>
 
 
     <div class="alert--cont">
@@ -121,7 +99,7 @@ function getProductPrices($productId, $con){
 
             <div class="inp-group">
                 <div class="inp-label">Product Name</div>
-                <input type="text required" value="<?php echo $productData["product_name"]; ?>" class="inp" id="txtname"
+                <input type="text" value="<?php echo $productData["product_name"] ?>" class="inp required" id="txtname"
                     placeholder="product name" data-id="txtname" />
                 <div class="error-text" data-id="txtname">Cannot leave this field blank</div>
             </div>
@@ -143,12 +121,12 @@ function getProductPrices($productId, $con){
 
             <div class="inp-group barcode-inp">
                 <div class="inp-label">Product Barcode</div>
-                <input type="text" class="inp required" value="<?php echo $productData["product_barcode"]; ?>" id="txtbarcode" placeholder="product barcode"
-                    data-id="txtbarcode" />
+                <input type="text" class="inp required" value="<?php echo $productData["product_barcode"]; ?>"
+                    id="txtbarcode" placeholder="product barcode" data-id="txtbarcode" />
 
                 <div class="barcode-options">
                     <div class="btn action-btn scan-btn" data-type="scan">Scan</div>
-                    <!-- <div class="btn action-btn generate-btn" data-type="generate">Generate</div> -->
+                    <div class="btn action-btn generate-btn" data-type="generate">Generate</div>
                 </div>
 
                 <div class="error-text" data-id="txtbarcode">Cannot leave this field blank</div>
@@ -159,61 +137,95 @@ function getProductPrices($productId, $con){
         </div>
         <!-- input row end -->
 
-        <div class="inp-row row-5 adj-5" style="justify-content: flex-start;gap: 24px;">
+        <div class="inp-row row-5">
+            <div class="inp-group">
+                <div class="inp-label">Product Quantity</div>
+                <input type="text" value="<?php echo $productData["product_quantity"]; ?>" class="inp required"
+                    id="txtquantity" placeholder="Product Quantity" data-id="txtquantity" />
+                <div class="error-text" data-id="txtquantity">Cannot leave this field blank</div>
+            </div>
+            <!-- inp group end -->
             <div class="inp-group">
                 <div class="inp-label">Product Code</div>
-                <input type="text" class="inp required" value="<?php echo $productData["product_code"]; ?>" id="txtcode" placeholder="product Code"
-                    data-id="txtcode" />
+                <input type="text" value="<?php echo $productData["product_code"]; ?>" class="inp required"
+                    value="1000110" id="txtcode" placeholder="product Code" data-id="txtcode" />
                 <div class="error-text" data-id="txtcode">Cannot leave this field blank</div>
             </div>
             <!-- inp group end -->
             <div class="inp-group">
-                <div class="inp-label">Product Description</div>
-                <input type="text" class="inp" value="<?php echo $productData["product_description"]; ?>" id="txtdescription" placeholder="Product Description"
-                    data-id="txtdescription" />
-                <div class="error-text" data-id="txtdescription">Cannot leave this field blank</div>
+                <div class="inp-label">Product Cost Price</div>
+                <input type="text" value="<?php echo $productData["product_cost_price"]; ?>"
+                    class="inp required gst-cal-inp" id="txtcostprice" placeholder="product cost price"
+                    data-id="txtcostprice" />
+                <div class="error-text" data-id="txtcostprice">Cannot leave this field blank</div>
+            </div>
+            <!-- inp group end -->
+            <div class="inp-group">
+                <div class="inp-label">CGST Percentage</div>
+                <input type="text" value="<?php echo $productData["product_cgst_percentage"]; ?>"
+                    class="inp required gst-cal-inp" id="txtcgstpercentage" placeholder="CGST Percentage"
+                    data-id="txtcgstpercentage" />
+                <div class="error-text" data-id="txtcgstpercentage">Cannot leave this field blank</div>
+            </div>
+            <!-- inp group end -->
+            <div class="inp-group">
+                <div class="inp-label">SGST Percentage</div>
+                <input type="text required" value="<?php echo $productData["product_sgst_percentage"]; ?>"
+                    class="inp gst-cal-inp" id="txtsgstpercentage" placeholder="SGST Percentage"
+                    data-id="txtsgstpercentage" />
+                <div class="error-text" data-id="txtsgstpercentage">Cannot leave this field blank</div>
             </div>
             <!-- inp group end -->
 
         </div>
         <!-- input row end -->
 
-        <div class=" full-width-row input-row" style="margin: 20px 0;">
-            <div class="full-width-table">
 
-                <table id="priceStockTable" class="adjusted-table">
-                    <tbody>
-                        <!-- Form row for adding new product details -->
-
-                        <tr class="controls-row">
-                            <td><input type="text" id="txtCostPrice" class="inp" placeholder="Enter Cost Price" /></td>
-                            <td><input type="text" id="txtStock" class="inp" placeholder="Enter Stock" /></td>
-                            <td><input type="text" id="txtGST" class="inp" placeholder="Enter GST %" /></td>
-                            <td><input type="text" id="txtSellingPrice" class="inp" placeholder="Enter Selling Price" />
-                            </td>
-                            <td><input type="text" id="txtParlourPrice" class="inp" placeholder="Enter Parlour Price" />
-                            </td>
-                            <td><button type="button" id="addPriceStock" class="btn action-btn">Add</button></td>
-                        </tr>
-
-                        <tr class="t-head">
-                            <th>Cost Price</th>
-                            <th>Stock</th>
-                            <th>GST %</th>
-                            <th>Selling Price</th>
-                            <th>Parlour Price</th>
-                            <th>Action</th>
-                        </tr>
-
-                    </tbody>
-                    <tbody class="table-body" id="priceStockTableBody">
-                </table>
+        <div class="inp-row row-5">
+            <div class="inp-group">
+                <div class="inp-label">IGST Percentage</div>
+                <input type="text required" value="<?php echo $productData["product_igst_percentage"]; ?>"
+                    class="inp gst-cal-inp" id="txtigstpercentage" placeholder="IGST Percentage"
+                    data-id="txtigstpercentage" />
+                <div class="error-text" data-id="txtigstpercentage">Cannot leave this field blank</div>
             </div>
+            <!-- inp group end -->
+
+            <div class="inp-group">
+                <div class="inp-label">Price Post GST</div>
+                <input type="text required" value="<?php echo $productData["product_cost_post_gst"]; ?>" class="inp"
+                    id="txtpricepostgst" placeholder="Price Post GST" data-id="txtpricepostgst" />
+                <div class="error-text" data-id="txtpricepostgst">Cannot leave this field blank</div>
+            </div>
+            <!-- inp group end -->
+
+            <div class="inp-group">
+                <div class="inp-label">Product Selling Price</div>
+                <input type="text required" value="<?php echo $productData["product_selling_price"]; ?>" class="inp"
+                    value="1003.25" id="txtsellingprice" placeholder="product Selling price"
+                    data-id="txtsellingprice" />
+                <div class="error-text" data-id="txtsellingprice">Cannot leave this field blank</div>
+            </div>
+            <!-- inp group end -->
+            <div class="inp-group">
+                <div class="inp-label">Product Parlour Price</div>
+                <input type="text required" class="inp" value="<?php echo $productData["product_parlour_price"]; ?>"
+                    id="txtparlourprice" placeholder="product Parlour price" data-id="txtparlourprice" />
+                <div class="error-text" data-id="txtparlourprice">Cannot leave this field blank</div>
+            </div>
+            <!-- inp group end -->
+
+
+            <div class="inp-group">
+                <div class="inp-label">Product Description</div>
+                <input type="text" class="inp" value="<?php echo $productData["product_description"]; ?>"
+                    id="txtdescription" placeholder="Product Description" data-id="txtdescription" />
+                <div class="error-text" data-id="txtdescription">Cannot leave this field blank</div>
+            </div>
+            <!-- inp group end -->
 
         </div>
-
-        <!-- inp row end -->
-
+        <!-- input row end -->
 
         <div class="input-row">
             <div class="inp-group image-group">
@@ -303,6 +315,7 @@ function getProductPrices($productId, $con){
     <script src="../scripts/helperFunctions.js"></script>
 
     <script>
+
         const defaultBrand = "<?php echo $productData["brand_id"]; ?>";
         const defaultCategory = "<?php echo $productData["category_id"]; ?>";
 
@@ -311,21 +324,26 @@ function getProductPrices($productId, $con){
         let errorTexts = document.querySelectorAll(".error-text");
         var generatedNumber;
         let productObject = {
-            "id": "",
+            "id": 0,
             "name": "",
             "brand": "",
             "category": "",
             "barcode": "",
+            "quantity": "",
             "code": "",
+            "costPrice": "",
+            "cGSTPercentage": "",
+            "sGSTPercentage": "",
+            "iGSTPercentage": "",
+            "postGSTPrice": "",
+            "sellingPrice": "",
+            "parlourPrice": "",
             "description": "",
-            "prices": [],
             "images": []
         };
     </script>
 
     <script src="../scripts/validation.js"></script>
-
-    <script src="./scripts/handlePrice.js"></script>
 
     <script src="./scripts/loadDropdownData.js"></script>
 
@@ -339,30 +357,14 @@ function getProductPrices($productId, $con){
 
     <script src="./scripts/multipleImageUpload.js"></script>
 
-    <script>
-        const currentProductId = <?php echo $productId; ?>;
-    </script>
-
-    <!--load product prices start-->
-    <script>
-        <?php
-        
-        $prices = getProductPrices($productId, $con);
-
-        ?>
-
-        let productPrices = <?php echo json_encode($prices); ?>;
-        loadInitialData(productPrices);
-
-    </script>
-    <!--load product prices end-->
-
     <!-- load images -->
     <script>
 
+        const currentProductId = <?php echo $productId; ?>;
+
         <?php
         $dir_name = "../../assets/images/products/" . $productId . "/";
-        $images = glob($dir_name . "*.*");  
+        $images = glob($dir_name . "*.*");
 
         $base64Images = [];
         foreach ($images as $imagePath) {
@@ -370,6 +372,7 @@ function getProductPrices($productId, $con){
             $imageData = file_get_contents($imagePath);
             $base64Image = 'data:image/' . $imageType . ';base64,' . base64_encode($imageData);
             $base64Images[] = $base64Image;
+
         }
         // print_r(json_encode($base64Images));
         ?>
@@ -386,10 +389,13 @@ function getProductPrices($productId, $con){
             });
             loadImages();
         }
+
+
     </script>
     <!-- load images -->
 
     <script>
+
         let submitBtn = document.querySelector(".submit--btn");
         submitBtn.addEventListener("click", e => {
 
@@ -397,17 +403,24 @@ function getProductPrices($productId, $con){
             if (isValid()) {
 
                 // assigning the values
-                productObject.id = currentProductId;
                 productObject.name = document.getElementById("txtname").value;
                 productObject.brand = document.getElementById("ddlbrand").value;
                 productObject.category = document.getElementById("ddlcategory").value;
                 productObject.barcode = document.getElementById("txtbarcode").value;
+                productObject.quantity = document.getElementById("txtquantity").value;
                 productObject.code = document.getElementById("txtcode").value;
+                productObject.costPrice = document.getElementById("txtcostprice").value;
+                productObject.cGSTPercentage = document.getElementById("txtcgstpercentage").value;
+                productObject.sGSTPercentage = document.getElementById("txtsgstpercentage").value;
+                productObject.iGSTPercentage = document.getElementById("txtigstpercentage").value;
+                productObject.postGSTPrice = document.getElementById("txtpricepostgst").value;
+                productObject.sellingPrice = document.getElementById("txtsellingprice").value;
+                productObject.parlourPrice = document.getElementById("txtparlourprice").value;
                 productObject.description = document.getElementById("txtdescription").value;
-                productObject.prices = priceStockArray;
+                productObject.id = currentProductId;
 
                 var xmlhttp = new XMLHttpRequest();
-                xmlhttp.onreadystatechange = function() {
+                xmlhttp.onreadystatechange = function () {
                     if (this.readyState == 4 && this.status == 200) {
                         var result = JSON.parse(this.responseText);
                         removeLoadingState(submitBtn);
@@ -425,6 +438,9 @@ function getProductPrices($productId, $con){
             }
 
         });
+
+
+
     </script>
 </body>
 

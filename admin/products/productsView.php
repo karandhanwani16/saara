@@ -46,16 +46,14 @@
                             <th>ID</th>
                             <th>Select</th>
                             <th>Delete</th>
-                            <th>Download</th>
                             <th>Category</th>
                             <th>Brand</th>
                             <th>Name</th>
                             <th>Barcode</th>
-                            <th>Quantity</th>
                             <th>Code</th>
-                            <th>Cost Price</th>
-                            <th>Selling Price</th>
-                            <th>Parlour Price</th>
+                            <th>Description</th>
+                            <th>Created By</th>
+                            <th>Updated By</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -65,7 +63,7 @@
     </div>
 
 
-    <div class="popup-backdrop"></div>
+    <!-- <div class="popup-backdrop"></div>
     <div class="popup-cont">
         <div class="popup-header">
             <p></p>
@@ -114,14 +112,14 @@
 
             </div>
         </div>
-    </div>
+    </div> -->
 
 
     <script src="../scripts/helperFunctions.js"></script>
-    <script src="./scripts/viewBarcodeGenerator.js"></script>
+    <!-- <script src="./scripts/viewBarcodeGenerator.js"></script> -->
 
-    <script src="./scripts/viewProductDetails.js"></script>
-    <script src="./scripts/viewPopup.js"></script>
+    <!-- <script src="./scripts/viewProductDetails.js"></script>
+    <script src="./scripts/viewPopup.js"></script> -->
 
     <script type="text/javascript" language="javascript">
         $(document).ready(function () {
@@ -148,13 +146,13 @@
                         });
                     });
                     // Print Buttons Functionality 
-                    let printBtns = document.querySelectorAll(".print-barcode-btn");
-                    printBtns.forEach(printBtn => {
-                        printBtn.addEventListener("click", e => {
-                            let id = printBtn.attributes["data-id"].value;
-                            printBarcode(printBtn, id);
-                        });
-                    });
+                    // let printBtns = document.querySelectorAll(".print-barcode-btn");
+                    // printBtns.forEach(printBtn => {
+                    //     printBtn.addEventListener("click", e => {
+                    //         let id = printBtn.attributes["data-id"].value;
+                    //         printBarcode(printBtn, id);
+                    //     });
+                    // });
 
                 }
             });
@@ -179,9 +177,9 @@
             }
 
 
-            function printBarcode(printBtn, id) {
-                generateBarcodeMain(id);
-            }
+            // function printBarcode(printBtn, id) {
+            //     generateBarcodeMain(id);
+            // }
 
         });
     </script>

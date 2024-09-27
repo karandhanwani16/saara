@@ -2,6 +2,7 @@
 
 require '../../services/config.php';
 require '../../services/helperFunctions.php';
+require 'commonFunctions.php';
 
 $productId = $_POST["id"];
 
@@ -36,26 +37,6 @@ try {
 $response = json_encode($finalObject);
 echo $response;
 
-function deleteProductImages($productId, $con)
-{
-    $deleted = true;
-    $productDir = "../../../assets/images/products/" . $productId . "/";
-
-    if (is_dir($productDir)) {
-        $objects = scandir($productDir);
-        foreach ($objects as $object) {
-            if ($object != "." && $object != "..") {
-                unlink($productDir . $object);
-            }
-        }
-        // delete directory as well
-        rmdir($productDir);
-    }
-
-
-
-    return $deleted;
-}
 
 
 

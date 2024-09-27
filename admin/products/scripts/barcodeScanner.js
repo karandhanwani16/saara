@@ -142,7 +142,6 @@ function initializeScanner() {
                 const permissionsButton = document.querySelector('#qr-reader__dashboard_section_csr > div > button');
                 if (permissionsButton) {
                     permissionsButton.click();
-                    console.log(`Clicked #qr-reader__dashboard_section_csr > div > button`);
                     observer.disconnect();
                     waitForCameraSelection();
                 }

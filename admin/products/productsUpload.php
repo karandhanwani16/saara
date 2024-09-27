@@ -1,7 +1,7 @@
 <?php
 
-include ("../services/config.php");
-include ("../../services/utils/generalFunctions.php");
+include("../services/config.php");
+include("../../services/utils/generalFunctions.php");
 session_start();
 $user_id = $_SESSION["user_id"];
 
@@ -17,6 +17,7 @@ $user_id = $_SESSION["user_id"];
     <title>Product Upload</title>
     <link rel="stylesheet" href="../style/assets.css">
     <link rel="stylesheet" href="../style/forms.css">
+    <link rel="stylesheet" href="../style/sales.css">
     <link rel="stylesheet" href="./style/product.css">
     <link rel="stylesheet" href="./style/multiImage.css">
 
@@ -51,6 +52,15 @@ $user_id = $_SESSION["user_id"];
 
         .image-group {
             width: 40%;
+        }
+
+
+        #priceStockTableBody .action-btns {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 18px;
+            flex-shrink: 0 !important;
         }
 
         /* barcode classes end */
@@ -95,12 +105,12 @@ $user_id = $_SESSION["user_id"];
 
             <div class="inp-group barcode-inp">
                 <div class="inp-label">Product Barcode</div>
-                <input type="text required" class="inp" id="txtbarcode" placeholder="product barcode"
+                <input type="text" class="inp required" id="txtbarcode" placeholder="product barcode"
                     data-id="txtbarcode" />
 
                 <div class="barcode-options">
                     <div class="btn action-btn scan-btn" data-type="scan">Scan</div>
-                    <div class="btn action-btn generate-btn" data-type="generate">Generate</div>
+                    <!-- <div class="btn action-btn generate-btn" data-type="generate">Generate</div> -->
                 </div>
 
                 <div class="error-text" data-id="txtbarcode">Cannot leave this field blank</div>
@@ -111,14 +121,7 @@ $user_id = $_SESSION["user_id"];
         </div>
         <!-- input row end -->
 
-        <div class="inp-row row-5">
-            <div class="inp-group">
-                <div class="inp-label">Product Quantity</div>
-                <input type="text" class="inp required" id="txtquantity" placeholder="Product Quantity"
-                    data-id="txtquantity" />
-                <div class="error-text" data-id="txtquantity">Cannot leave this field blank</div>
-            </div>
-            <!-- inp group end -->
+        <div class="inp-row row-5 adj-5" style="justify-content: flex-start;gap: 24px;">
             <div class="inp-group">
                 <div class="inp-label">Product Code</div>
                 <input type="text" class="inp required" value="1000110" id="txtcode" placeholder="product Code"
@@ -126,65 +129,6 @@ $user_id = $_SESSION["user_id"];
                 <div class="error-text" data-id="txtcode">Cannot leave this field blank</div>
             </div>
             <!-- inp group end -->
-            <div class="inp-group">
-                <div class="inp-label">Product Cost Price</div>
-                <input type="text" class="inp  required gst-cal-inp" id="txtcostprice" placeholder="product cost price"
-                    data-id="txtcostprice" />
-                <div class="error-text" data-id="txtcostprice">Cannot leave this field blank</div>
-            </div>
-            <!-- inp group end -->
-            <div class="inp-group">
-                <div class="inp-label">CGST Percentage</div>
-                <input type="text" value="0" class="inp  required gst-cal-inp" id="txtcgstpercentage"
-                    placeholder="CGST Percentage" data-id="txtcgstpercentage" />
-                <div class="error-text" data-id="txtcgstpercentage">Cannot leave this field blank</div>
-            </div>
-            <!-- inp group end -->
-            <div class="inp-group">
-                <div class="inp-label">SGST Percentage</div>
-                <input type="text" value="0" class="inp  required gst-cal-inp" id="txtsgstpercentage"
-                    placeholder="SGST Percentage" data-id="txtsgstpercentage" />
-                <div class="error-text" data-id="txtsgstpercentage">Cannot leave this field blank</div>
-            </div>
-            <!-- inp group end -->
-
-        </div>
-        <!-- input row end -->
-
-
-        <div class="inp-row row-5">
-            <div class="inp-group">
-                <div class="inp-label">IGST Percentage</div>
-                <input type="text" value="0" class="inp  required gst-cal-inp" id="txtigstpercentage"
-                    placeholder="IGST Percentage" data-id="txtigstpercentage" />
-                <div class="error-text" data-id="txtigstpercentage">Cannot leave this field blank</div>
-            </div>
-            <!-- inp group end -->
-
-            <div class="inp-group">
-                <div class="inp-label">Price Post GST</div>
-                <input type="text" class="inp required" id="txtpricepostgst" placeholder="Price Post GST"
-                    data-id="txtpricepostgst" />
-                <div class="error-text" data-id="txtpricepostgst">Cannot leave this field blank</div>
-            </div>
-            <!-- inp group end -->
-
-            <div class="inp-group">
-                <div class="inp-label">Product Selling Price</div>
-                <input type="text" class="inp required" value="1003.25" id="txtsellingprice"
-                    placeholder="product Selling price" data-id="txtsellingprice" />
-                <div class="error-text" data-id="txtsellingprice">Cannot leave this field blank</div>
-            </div>
-            <!-- inp group end -->
-            <div class="inp-group">
-                <div class="inp-label">Product Parlour Price</div>
-                <input type="text" class="inp required" value="999.99" id="txtparlourprice"
-                    placeholder="product Parlour price" data-id="txtparlourprice" />
-                <div class="error-text" data-id="txtparlourprice">Cannot leave this field blank</div>
-            </div>
-            <!-- inp group end -->
-
-
             <div class="inp-group">
                 <div class="inp-label">Product Description</div>
                 <input type="text" class="inp" id="txtdescription" placeholder="Product Description"
@@ -195,6 +139,43 @@ $user_id = $_SESSION["user_id"];
 
         </div>
         <!-- input row end -->
+
+        <div class=" full-width-row input-row" style="margin: 20px 0;">
+            <div class="full-width-table">
+
+                <table id="priceStockTable" class="adjusted-table">
+                    <tbody>
+                        <!-- Form row for adding new product details -->
+
+                        <tr class="controls-row">
+                            <td><input type="text" value="100" id="txtCostPrice" class="inp" placeholder="Enter Cost Price" /></td>
+                            <td><input type="text" value="10" id="txtStock" class="inp" placeholder="Enter Stock" /></td>
+                            <td><input type="text" value="18" id="txtGST" class="inp" placeholder="Enter GST %" /></td>
+                            <td><input type="text" value="118" id="txtSellingPrice" class="inp" placeholder="Enter Selling Price" />
+                            </td>
+                            <td><input type="text" value="109" id="txtParlourPrice" class="inp" placeholder="Enter Parlour Price" />
+                            </td>
+                            <td><button type="button" id="addPriceStock" class="btn action-btn">Add</button></td>
+                        </tr>
+
+                        <tr class="t-head">
+                            <th>Cost Price</th>
+                            <th>Stock</th>
+                            <th>GST %</th>
+                            <th>Selling Price</th>
+                            <th>Parlour Price</th>
+                            <th>Action</th>
+                        </tr>
+
+                    </tbody>
+                    <tbody class="table-body" id="priceStockTableBody">
+                </table>
+            </div>
+
+        </div>
+
+        <!-- inp row end -->
+
 
         <div class="input-row">
             <div class="inp-group image-group">
@@ -298,21 +279,16 @@ $user_id = $_SESSION["user_id"];
             "brand": "",
             "category": "",
             "barcode": "",
-            "quantity": "",
             "code": "",
-            "costPrice": "",
-            "cGSTPercentage": "",
-            "sGSTPercentage": "",
-            "iGSTPercentage": "",
-            "postGSTPrice": "",
-            "sellingPrice": "",
-            "parlourPrice": "",
             "description": "",
+            "prices": [],
             "images": []
         };
     </script>
 
     <script src="../scripts/validation.js"></script>
+
+    <script src="./scripts/handlePrice.js"></script>
 
     <script src="./scripts/loadDropdownData.js"></script>
 
@@ -340,17 +316,9 @@ $user_id = $_SESSION["user_id"];
                 productObject.brand = document.getElementById("ddlbrand").value;
                 productObject.category = document.getElementById("ddlcategory").value;
                 productObject.barcode = document.getElementById("txtbarcode").value;
-                productObject.quantity = document.getElementById("txtquantity").value;
                 productObject.code = document.getElementById("txtcode").value;
-                productObject.costPrice = document.getElementById("txtcostprice").value;
-                productObject.cGSTPercentage = document.getElementById("txtcgstpercentage").value;
-                productObject.sGSTPercentage = document.getElementById("txtsgstpercentage").value;
-                productObject.iGSTPercentage = document.getElementById("txtigstpercentage").value;
-                productObject.postGSTPrice = document.getElementById("txtpricepostgst").value;
-                productObject.sellingPrice = document.getElementById("txtsellingprice").value;
-                productObject.parlourPrice = document.getElementById("txtparlourprice").value;
                 productObject.description = document.getElementById("txtdescription").value;
-
+                productObject.prices = priceStockArray;
 
                 var xmlhttp = new XMLHttpRequest();
                 xmlhttp.onreadystatechange = function () {

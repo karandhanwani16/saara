@@ -1,0 +1,117 @@
+.inp-row .barcode-inp {
+    position: relative;
+    width: 40% !important;
+}
+
+.barcode-options {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-cont .btn {
+    font-size: 0.9rem;
+    padding: 6px 16px;
+}
+
+.scan-btn {
+    background-color: var(--primary-color);
+}
+
+.generate-btn {
+    background-color: var(--success-color);
+}
+
+
+/* ======= Popup ======= */
+
+.popup-backdrop {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    display: none;
+}
+
+.popup-cont {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    z-index: 9999;
+    max-width: 27.5vw;
+    padding: 12px;
+    border-radius: 12px;
+    display: none;
+}
+
+.popup-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.close-btn {
+    /* margin-left: 148px; */
+    padding: 12px;
+    border-radius: 100%;
+    background: #eee;
+    display: flex;
+    justify-content: center;
+    align-items: center
+}
+
+.close-btn img {
+    height: 12px;
+    width: 12px;
+}
+
+.popup-body {
+    margin-top: 16px;
+    width: 100%;
+    width: 300px;
+    height: 350px;
+    border: none;
+    overflow-y: auto;
+}
+
+#qr-reader>div:nth-child(1) {
+    display: none;
+}
+
+
+.generate--cont {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.barcode {
+    width: 100%;
+    height: 128px;
+    border-radius: 8px;
+    border: 1px solid #d9d6d6;
+}
+
+.popup-body .btn-cont {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 1rem;
+}
+
+
+.print-btn {
+    background-color: var(--success-color);
+}

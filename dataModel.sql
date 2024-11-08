@@ -104,7 +104,7 @@ CREATE TABLE `sale_items` (
     discount_type VARCHAR(20),
     FOREIGN KEY (sale_id) REFERENCES sales(sale_id)
 );
-
+-- Table Name: purchase
 CREATE TABLE `purchase` (
  `purchase_id` bigint(20) NOT NULL,
  `supplier_id` bigint(20) NOT NULL,
@@ -115,25 +115,17 @@ CREATE TABLE `purchase` (
  `purchase_created_at` timestamp NOT NULL DEFAULT current_timestamp(),
  `purchase_updated_by` bigint(20) NOT NULL,
  `purchase_updated_at` timestamp NOT NULL DEFAULT current_timestamp()
-) 
-
+)
+-- Table Name: purchase_items
 CREATE TABLE `purchase_items` (
  `purchase_item_id` int(11) NOT NULL,
  `purchase_id` bigint(20) NOT NULL,
  `purchase_item_product_id` bigint(20) NOT NULL,
  `purchase_item_product_name` varchar(100) NOT NULL,
- `purchase_item_product_hsn` varchar(100) NOT NULL,
  `purchase_item_product_quantity` int(11) NOT NULL,
+ `purchase_item_price_id` bigint(20) NOT NULL,
  `purchase_item_product_price` int(11) NOT NULL,
  `purchase_item_product_gst` varchar(100) NOT NULL,
  `purchase_item_product_is_igst` varchar(100) NOT NULL,
  `purchase_item_product_total` int(11) NOT NULL
 )
-
-CREATE TABLE `logs` (
- `log_timestamp` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
- `action_type` varchar(200) NOT NULL,
- `log_action` varchar(200) NOT NULL,
- `log_user` varchar(200) NOT NULL,
- `log_description` varchar(7900) NOT NULL
-) 

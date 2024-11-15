@@ -122,12 +122,12 @@ $user_id = $_SESSION["user_id"];
         <!-- input row end -->
 
         <div class="inp-row row-5 adj-5" style="justify-content: flex-start;gap: 24px;">
-            <div class="inp-group">
+            <!-- <div class="inp-group">
                 <div class="inp-label">Product Code</div>
                 <input type="text" class="inp required" value="1000110" id="txtcode" placeholder="product Code"
                     data-id="txtcode" />
                 <div class="error-text" data-id="txtcode">Cannot leave this field blank</div>
-            </div>
+            </div> -->
             <!-- inp group end -->
             <div class="inp-group">
                 <div class="inp-label">Product Description</div>
@@ -155,6 +155,8 @@ $user_id = $_SESSION["user_id"];
                             </td>
                             <td><input type="text" value="109" id="txtParlourPrice" class="inp" placeholder="Enter Parlour Price" />
                             </td>
+                            <td><input type="text" value="Abc" id="txtBatchNumber" class="inp" placeholder="Enter Batch Number" />
+                            </td>
                             <td><button type="button" id="addPriceStock" class="btn action-btn">Add</button></td>
                         </tr>
 
@@ -164,6 +166,7 @@ $user_id = $_SESSION["user_id"];
                             <th>GST %</th>
                             <th>Selling Price</th>
                             <th>Parlour Price</th>
+                            <th>Batch Number</th>
                             <th>Action</th>
                         </tr>
 
@@ -221,7 +224,7 @@ $user_id = $_SESSION["user_id"];
                         <div id="extraDetailsHeader1"></div>
                         <div id="extraDetailsHeader2"></div>
                         <div class="middle-cont">
-                            <div id="productCode"></div>
+                            <div id="batchNumberLeft"></div>
                             <img id="generatedBarcode" />
                         </div>
                         <div class="details" id="extraDetailsFooter"></div>
@@ -235,7 +238,7 @@ $user_id = $_SESSION["user_id"];
                         </tr>
                         <tr>
                             <td>
-                                <div id="productCode" style="transform: rotate(-90deg);height: 10px;"></div>
+                                <div id="batchNumberLeft" style="transform: rotate(-90deg);height: 10px;"></div>
                             </td>
                             <td>
                                 <img id="generatedBarcode" />
@@ -316,7 +319,7 @@ $user_id = $_SESSION["user_id"];
                 productObject.brand = document.getElementById("ddlbrand").value;
                 productObject.category = document.getElementById("ddlcategory").value;
                 productObject.barcode = document.getElementById("txtbarcode").value;
-                productObject.code = document.getElementById("txtcode").value;
+                // productObject.code = document.getElementById("txtcode").value;
                 productObject.description = document.getElementById("txtdescription").value;
                 productObject.prices = priceStockArray;
 

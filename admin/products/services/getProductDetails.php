@@ -18,7 +18,7 @@ $finalObject->barcode = "";
 
 try {
 
-    $query = "select product_name,product_code,product_selling_price,product_parlour_price,product_barcode from products where product_id = $id";
+    $query = "select product_name,product_selling_price,product_parlour_price,product_barcode from products where product_id = $id";
 
     $result = $con->query($query);
 

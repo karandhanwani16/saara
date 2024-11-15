@@ -53,7 +53,7 @@ $currentDate = date('Y-m-d');
 
             <div class="inp-group">
                 <div class="inp-label">Purchase Date</div>
-                <input type="date" value="" class="inp inp-date required" id="txtpurchasedate"
+                <input type="date" value="<?php echo $currentDate; ?>" class="inp inp-date required" id="txtpurchasedate"
                     placeholder="Purchase Date" data-id="txtpurchasedate" />
                 <div class="error-text" data-id="txtpurchasedate">Cannot leave this field blank</div>
             </div>

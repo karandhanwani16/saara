@@ -8,8 +8,9 @@ printBtn.addEventListener("click", printBarcode);
 
 //  Main generate Logic
 
-function generateBarcodeMain(sellingPrice, parlourPrice) {
-    openPopup("generate", sellingPrice, parlourPrice);
+function generateBarcodeMain(sellingPrice, parlourPrice,batchNumber) {
+    debugger;
+    openPopup("generate", sellingPrice, parlourPrice, batchNumber);
     loadScript("https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/barcodes/JsBarcode.code128.min.js", generateBarcode);
 }
 

@@ -16,7 +16,6 @@ $name = $data["name"];
 $brand = $data["brand"];
 $category = $data["category"];
 $barcode = $data["barcode"];
-$code = $data["code"];
 $description = $data["description"];
 $images = $data["images"];
 $currentProductId = $data["id"];
@@ -30,7 +29,7 @@ $user_id = $_SESSION["user_id"];
 try {
     if (!isExistUpdate($name, "products", "product_name", "product_id", $currentProductId, $con)) {
 
-        $sql = "update products set category_id = $category,brand_id = $brand,product_name='$name',product_barcode='$barcode',product_code='$code',product_description='$description',product_updated_at='" . getCurrentTimestamp() . "',product_updated_by=" . $user_id . " where product_id = $currentProductId";
+        $sql = "update products set category_id = $category,brand_id = $brand,product_name='$name',product_barcode='$barcode',product_description='$description',product_updated_at='" . getCurrentTimestamp() . "',product_updated_by=" . $user_id . " where product_id = $currentProductId";
 
         // echo $sql;
 

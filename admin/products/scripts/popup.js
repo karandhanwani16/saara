@@ -4,7 +4,8 @@ const popupCloseBtn = document.querySelector(".close-btn");
 
 //Hello World
 
-function openPopup(type, sellingPrice = 0, parlourPrice = 0) {
+function openPopup(type, sellingPrice = 0, parlourPrice = 0,batchNumber = 0) {
+    debugger;
     changePopupHeader(type);
 
     if (type === "generate") {
@@ -21,18 +22,15 @@ function openPopup(type, sellingPrice = 0, parlourPrice = 0) {
         // extra details
         const extraDetailsHeader1 = document.querySelector("#extraDetailsHeader1");
         const extraDetailsHeader2 = document.querySelector("#extraDetailsHeader2");
-        const productCode = document.querySelector("#productCode");
         const productName = document.querySelector("#txtname");
-        const productCodeInput = document.querySelector("#txtcode");
 
+        const batchNumberLeft = document.querySelector("#batchNumberLeft");
         const footerSellingPrice = document.querySelector("#footerSellingPrice");
-        // const footerParlourPrice = document.querySelector("#footerParlourPrice");
-        // const sellingPrice = document.querySelector("#txtsellingprice");
-        // const parlourPrice = document.querySelector("#txtparlourprice");
+        const footerParlourPrice = document.querySelector("#footerParlourPrice");
 
         extraDetailsHeader1.innerHTML = `<p class='sara-barcode-logo' >Saara Beauty Centre & Gift</p>`;
         extraDetailsHeader2.innerHTML = `${productName.value} `;
-        productCode.innerHTML = `${productCodeInput.value} `;
+        batchNumberLeft.innerHTML = batchNumber;
         footerSellingPrice.innerHTML = sellingPrice;
         footerParlourPrice.innerHTML = parlourPrice;
 
@@ -111,12 +109,12 @@ function getGenerateContainerBody() {
 
     const tr3 = document.createElement("tr");
     const td3 = document.createElement("td");
-    const productCodeDiv = document.createElement("div");
-    productCodeDiv.id = "productCode";
-    productCodeDiv.style.transform = "rotate(-90deg)";
-    productCodeDiv.style.height = "10px";
+    const batchNumberDiv = document.createElement("div");
+    batchNumberDiv.id = "batchNumberLeft";
+    batchNumberDiv.style.transform = "rotate(-90deg)";
+    batchNumberDiv.style.height = "10px";
 
-    td3.appendChild(productCodeDiv);
+    td3.appendChild(batchNumberDiv);
 
     const td4 = document.createElement("td");
     const img = document.createElement("img");
@@ -181,8 +179,5 @@ function getGenerateContainerBody() {
 
     useCodeBtn.addEventListener("click", useCodeFunc)
     printBtn.addEventListener("click", printBarcode);
-
-
-
 
 }

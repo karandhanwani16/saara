@@ -27,8 +27,9 @@ function getProductData($productId, $con)
     return $productDetails;
 }
 
-function getProductPrices($productId, $con){
-    $query = "select product_prices_cost_price as costPrice,product_prices_stock as stock,product_prices_gst_percentage as gst,product_prices_selling_price as sellingPrice,product_prices_parlour_price as parlourPrice from product_prices where product_id = $productId";
+function getProductPrices($productId, $con)
+{
+    $query = "select product_prices_cost_price as costPrice,product_prices_stock as stock,product_prices_gst_percentage as gst,product_prices_selling_price as sellingPrice,product_prices_parlour_price as parlourPrice,product_prices_batch_number as batchNumber from product_prices where product_id = $productId";
     $result = $con->query($query);
     $prices = [];
     if ($result->num_rows > 0) {
@@ -105,7 +106,7 @@ function getProductPrices($productId, $con){
 
 <body>
 
-<div onclick="window.history.back()" class="back-btn"><img src='../assets/icons/back.svg' alt=''></div>
+    <div onclick="window.history.back()" class="back-btn"><img src='../assets/icons/back.svg' alt=''></div>
 
 
     <div class="alert--cont">
@@ -143,8 +144,8 @@ function getProductPrices($productId, $con){
 
             <div class="inp-group barcode-inp">
                 <div class="inp-label">Product Barcode</div>
-                <input type="text" class="inp required" value="<?php echo $productData["product_barcode"]; ?>" id="txtbarcode" placeholder="product barcode"
-                    data-id="txtbarcode" />
+                <input type="text" class="inp required" value="<?php echo $productData["product_barcode"]; ?>"
+                    id="txtbarcode" placeholder="product barcode" data-id="txtbarcode" />
 
                 <div class="barcode-options">
                     <div class="btn action-btn scan-btn" data-type="scan">Scan</div>
@@ -160,17 +161,17 @@ function getProductPrices($productId, $con){
         <!-- input row end -->
 
         <div class="inp-row row-5 adj-5" style="justify-content: flex-start;gap: 24px;">
-            <div class="inp-group">
+            <!-- <div class="inp-group">
                 <div class="inp-label">Product Code</div>
                 <input type="text" class="inp required" value="<?php echo $productData["product_code"]; ?>" id="txtcode" placeholder="product Code"
                     data-id="txtcode" />
                 <div class="error-text" data-id="txtcode">Cannot leave this field blank</div>
-            </div>
+            </div> -->
             <!-- inp group end -->
             <div class="inp-group">
                 <div class="inp-label">Product Description</div>
-                <input type="text" class="inp" value="<?php echo $productData["product_description"]; ?>" id="txtdescription" placeholder="Product Description"
-                    data-id="txtdescription" />
+                <input type="text" class="inp" value="<?php echo $productData["product_description"]; ?>"
+                    id="txtdescription" placeholder="Product Description" data-id="txtdescription" />
                 <div class="error-text" data-id="txtdescription">Cannot leave this field blank</div>
             </div>
             <!-- inp group end -->
@@ -193,6 +194,9 @@ function getProductPrices($productId, $con){
                             </td>
                             <td><input type="text" id="txtParlourPrice" class="inp" placeholder="Enter Parlour Price" />
                             </td>
+                            <td><input type="text" value="Abc" id="txtBatchNumber" class="inp"
+                                    placeholder="Enter Batch Number" />
+                            </td>
                             <td><button type="button" id="addPriceStock" class="btn action-btn">Add</button></td>
                         </tr>
 
@@ -202,6 +206,7 @@ function getProductPrices($productId, $con){
                             <th>GST %</th>
                             <th>Selling Price</th>
                             <th>Parlour Price</th>
+                            <th>Batch Number</th>
                             <th>Action</th>
                         </tr>
 
@@ -273,7 +278,7 @@ function getProductPrices($productId, $con){
                         </tr>
                         <tr>
                             <td>
-                                <div id="productCode" style="transform: rotate(-90deg);height: 10px;"></div>
+                                <div id="batchNumberLeft" style="transform: rotate(-90deg);height: 10px;"></div>
                             </td>
                             <td>
                                 <img id="generatedBarcode" />
@@ -316,7 +321,6 @@ function getProductPrices($productId, $con){
             "brand": "",
             "category": "",
             "barcode": "",
-            "code": "",
             "description": "",
             "prices": [],
             "images": []
@@ -346,7 +350,7 @@ function getProductPrices($productId, $con){
     <!--load product prices start-->
     <script>
         <?php
-        
+
         $prices = getProductPrices($productId, $con);
 
         ?>
@@ -362,7 +366,7 @@ function getProductPrices($productId, $con){
 
         <?php
         $dir_name = "../../assets/images/products/" . $productId . "/";
-        $images = glob($dir_name . "*.*");  
+        $images = glob($dir_name . "*.*");
 
         $base64Images = [];
         foreach ($images as $imagePath) {
@@ -402,12 +406,11 @@ function getProductPrices($productId, $con){
                 productObject.brand = document.getElementById("ddlbrand").value;
                 productObject.category = document.getElementById("ddlcategory").value;
                 productObject.barcode = document.getElementById("txtbarcode").value;
-                productObject.code = document.getElementById("txtcode").value;
                 productObject.description = document.getElementById("txtdescription").value;
                 productObject.prices = priceStockArray;
 
                 var xmlhttp = new XMLHttpRequest();
-                xmlhttp.onreadystatechange = function() {
+                xmlhttp.onreadystatechange = function () {
                     if (this.readyState == 4 && this.status == 200) {
                         var result = JSON.parse(this.responseText);
                         removeLoadingState(submitBtn);

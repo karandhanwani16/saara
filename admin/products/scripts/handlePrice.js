@@ -1,6 +1,6 @@
 let priceStockArray = [];
 
-function addPriceStockRow(costPrice, stock, gst, sellingPrice, parlourPrice, isInitialLoad = false) {
+function addPriceStockRow(costPrice, stock, gst, sellingPrice, parlourPrice, batchNumber, isInitialLoad = false) {
     const newRow = document.createElement("tr");
     newRow.innerHTML = `
         <td class="costprice-cell">${costPrice}</td>
@@ -8,6 +8,7 @@ function addPriceStockRow(costPrice, stock, gst, sellingPrice, parlourPrice, isI
         <td class="gst-cell">${gst}</td>
         <td class="sellingprice-cell">${sellingPrice}</td>
         <td class="parlourprice-cell">${parlourPrice}</td>
+        <td class="batchnumber-cell">${batchNumber}</td>
         <td class="action-btns">
             <button type="button" class="btn generate-btn">Generate</button>
             <button type="button" class="btn edit-btn">Edit</button>
@@ -18,7 +19,7 @@ function addPriceStockRow(costPrice, stock, gst, sellingPrice, parlourPrice, isI
     document.querySelector("#priceStockTableBody").appendChild(newRow);
 
     // Store the data in the array
-    priceStockArray.push({ costPrice, stock, gst, sellingPrice, parlourPrice });
+    priceStockArray.push({ costPrice, stock, gst, sellingPrice, parlourPrice, batchNumber });
 
     if (!isInitialLoad) {
         // Clear input fields
@@ -27,6 +28,7 @@ function addPriceStockRow(costPrice, stock, gst, sellingPrice, parlourPrice, isI
         document.getElementById("txtGST").value = "";
         document.getElementById("txtSellingPrice").value = "";
         document.getElementById("txtParlourPrice").value = "";
+        document.getElementById("txtBatchNumber").value = "";
     }
 
     // Add delete functionality to the row
@@ -45,6 +47,8 @@ function addPriceStockRow(costPrice, stock, gst, sellingPrice, parlourPrice, isI
         const gstCell = row.querySelector(".gst-cell");
         const sellingPriceCell = row.querySelector(".sellingprice-cell");
         const parlourPriceCell = row.querySelector(".parlourprice-cell");
+        const batchNumberCell = row.querySelector(".batchnumber-cell");
+
 
         if (this.textContent === "Edit") {
             // Replace text with input fields for editing
@@ -53,6 +57,7 @@ function addPriceStockRow(costPrice, stock, gst, sellingPrice, parlourPrice, isI
             gstCell.innerHTML = `<input type="text" class="inp edit-gst" value="${gstCell.textContent}" />`;
             sellingPriceCell.innerHTML = `<input type="text" class="inp edit-selling-price" value="${sellingPriceCell.textContent}" />`;
             parlourPriceCell.innerHTML = `<input type="text" class="inp edit-parlour-price" value="${parlourPriceCell.textContent}" />`;
+            batchNumberCell.innerHTML = `<input type="text" class="inp edit-batch-number" value="${batchNumberCell.textContent}" />`;
 
             // Change "Edit" button to "Save"
             this.textContent = "Save";
@@ -63,6 +68,7 @@ function addPriceStockRow(costPrice, stock, gst, sellingPrice, parlourPrice, isI
             const editedGST = row.querySelector(".edit-gst").value;
             const editedSellingPrice = row.querySelector(".edit-selling-price").value;
             const editedParlourPrice = row.querySelector(".edit-parlour-price").value;
+            const editedBatchNumber = row.querySelector(".edit-batch-number").value;
 
             // Update table cells with new values
             costPriceCell.textContent = editedCostPrice;
@@ -70,23 +76,27 @@ function addPriceStockRow(costPrice, stock, gst, sellingPrice, parlourPrice, isI
             gstCell.textContent = editedGST;
             sellingPriceCell.textContent = editedSellingPrice;
             parlourPriceCell.textContent = editedParlourPrice;
+            batchNumberCell.textContent = editedBatchNumber;
 
             // Update array with new values
             const rowIndex = row.rowIndex - 1;
-            priceStockArray[rowIndex] = { costPrice: editedCostPrice, stock: editedStock, gst: editedGST, sellingPrice: editedSellingPrice, parlourPrice: editedParlourPrice };
+            priceStockArray[rowIndex] = { costPrice: editedCostPrice, stock: editedStock, gst: editedGST, sellingPrice: editedSellingPrice, parlourPrice: editedParlourPrice, batchNumber:editedBatchNumber};
 
             // Change "Save" button back to "Edit"
             this.textContent = "Edit";
         }
     });
+    debugger;
 
     // add generate functionality to the row
     const generateButton = newRow.querySelector(".generate-btn");
     generateButton.addEventListener("click", function () {
         const sellingPrice = this.closest("tr").querySelector(".sellingprice-cell").textContent;
         const parlourPrice = this.closest("tr").querySelector(".parlourprice-cell").textContent;
-
-        generateBarcodeMain(sellingPrice, parlourPrice);
+        const batchNumber = this.closest("tr").querySelector(".batchnumber-cell").textContent;
+        // TODO: add batchnumber in function too!!
+        debugger;
+        generateBarcodeMain(sellingPrice, parlourPrice,batchNumber); 
     });
 }
 
@@ -96,16 +106,17 @@ document.getElementById("addPriceStock").addEventListener("click", function () {
     const gst = document.getElementById("txtGST").value;
     const sellingPrice = document.getElementById("txtSellingPrice").value;
     const parlourPrice = document.getElementById("txtParlourPrice").value;
+    const batchNumber = document.getElementById("txtBatchNumber").value;
 
-    if (costPrice && stock && gst && sellingPrice && parlourPrice) {
-        addPriceStockRow(costPrice, stock, gst, sellingPrice, parlourPrice);
+    if (costPrice && stock && gst && sellingPrice && parlourPrice && batchNumber) {
+        addPriceStockRow(costPrice, stock, gst, sellingPrice, parlourPrice, batchNumber);
     }
 });
 
 // Function to load initial data from DB
 function loadInitialData(initialData) {
     initialData.forEach(item => {
-        addPriceStockRow(item.costPrice, item.stock, item.gst, item.sellingPrice, item.parlourPrice, true);
+        addPriceStockRow(item.costPrice, item.stock, item.gst, item.sellingPrice, item.parlourPrice, item.batchNumber,true);
     });
 }
 

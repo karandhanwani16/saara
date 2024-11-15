@@ -11,18 +11,18 @@ function openPopup(productData) {
         generateBody.style.display = "flex";
     }
 
-    const { name: productName, code: productCodeInput, sellingPrice, parlourPrice } = productData;
+    const { name: productName, code: batchNumber, sellingPrice, parlourPrice } = productData;
 
     // extra details
     const extraDetailsHeader1 = document.querySelector("#extraDetailsHeader1");
     const extraDetailsHeader2 = document.querySelector("#extraDetailsHeader2");
-    const productCode = document.querySelector("#productCode");
+    const batchNumberLeft = document.querySelector("#txtBatchNumber");
     const footerSellingPrice = document.querySelector("#footerSellingPrice");
     const footerParlourPrice = document.querySelector("#footerParlourPrice");
 
     extraDetailsHeader1.innerHTML = `<p class='sara-barcode-logo' >Saara Beauty Centre & Gift</p>`;
     extraDetailsHeader2.innerHTML = productName;
-    productCode.innerHTML = productCodeInput;
+    batchNumberLeft.innerHTML = batchNumber;
     footerSellingPrice.innerHTML = sellingPrice;
     footerParlourPrice.innerHTML = parlourPrice;
 

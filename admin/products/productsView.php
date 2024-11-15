@@ -50,7 +50,7 @@
                             <th>Brand</th>
                             <th>Name</th>
                             <th>Barcode</th>
-                            <th>Code</th>
+                            <!-- <th>Batch</th> -->
                             <th>Description</th>
                             <th>Created By</th>
                             <th>Updated By</th>

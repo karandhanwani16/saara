@@ -282,7 +282,6 @@ $user_id = $_SESSION["user_id"];
             "brand": "",
             "category": "",
             "barcode": "",
-            "code": "",
             "description": "",
             "prices": [],
             "images": []

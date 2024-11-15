@@ -7,7 +7,7 @@ function addPriceStockRow(costPrice, stock, gst, sellingPrice, parlourPrice, bat
         <td class="stock-cell">${stock}</td>
         <td class="gst-cell">${gst}</td>
         <td class="sellingprice-cell">${sellingPrice}</td>
-        <td class="parlourprice-cell">${parlourPrice}</td>
+        <td class="parlourprice-cell">${parlourPrice*2}</td>
         <td class="batchnumber-cell">${batchNumber}</td>
         <td class="action-btns">
             <button type="button" class="btn generate-btn">Generate</button>
@@ -56,7 +56,7 @@ function addPriceStockRow(costPrice, stock, gst, sellingPrice, parlourPrice, bat
             stockCell.innerHTML = `<input type="text" class="inp edit-stock" value="${stockCell.textContent}" />`;
             gstCell.innerHTML = `<input type="text" class="inp edit-gst" value="${gstCell.textContent}" />`;
             sellingPriceCell.innerHTML = `<input type="text" class="inp edit-selling-price" value="${sellingPriceCell.textContent}" />`;
-            parlourPriceCell.innerHTML = `<input type="text" class="inp edit-parlour-price" value="${parlourPriceCell.textContent}" />`;
+            parlourPriceCell.innerHTML = `<input type="text" class="inp edit-parlour-price" value="${(parlourPriceCell.textContent)/2}" />`;
             batchNumberCell.innerHTML = `<input type="text" class="inp edit-batch-number" value="${batchNumberCell.textContent}" />`;
 
             // Change "Edit" button to "Save"
@@ -75,7 +75,7 @@ function addPriceStockRow(costPrice, stock, gst, sellingPrice, parlourPrice, bat
             stockCell.textContent = editedStock;
             gstCell.textContent = editedGST;
             sellingPriceCell.textContent = editedSellingPrice;
-            parlourPriceCell.textContent = editedParlourPrice;
+            parlourPriceCell.textContent = editedParlourPrice*2;
             batchNumberCell.textContent = editedBatchNumber;
 
             // Update array with new values

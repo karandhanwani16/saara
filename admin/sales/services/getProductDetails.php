@@ -21,7 +21,7 @@ if (!$barcode) {
 
 try {
     // Prepare and execute product query
-    $productSql = "select p.product_id,p.category_id, p.brand_id, p.product_name, p.product_barcode, p.product_code, p.product_description, c.category_name from products p inner join category c on p.category_id = c.category_id where p.product_barcode = ?";
+    $productSql = "select p.product_id,p.category_id, p.brand_id, p.product_name, p.product_barcode, p.product_description, c.category_name from products p inner join category c on p.category_id = c.category_id where p.product_barcode = ?";
     $stmt = mysqli_prepare($con, $productSql);
 
     // Check if the statement was prepared successfully

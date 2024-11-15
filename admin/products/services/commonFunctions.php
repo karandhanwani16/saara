@@ -52,7 +52,8 @@ function uploadProductPrices($product_id, $prices,$con){
         //get new id for product prices
         $maximumProductPriceId = getCurrentId("product_prices_id", "product_prices", $con);
         $price = $prices[$i];
-        $sql = "insert into product_prices values(" . $maximumProductPriceId . "," . $product_id . ",'" . $price["costPrice"] . "','" . $price["stock"] . "','" . $price["gst"] . "','" . $price["sellingPrice"] . "','" . $price["parlourPrice"] . "','" . $price["batchNumber"] . "')";
+        $doubledParlourPrice = $price["parlourPrice"]*2;
+        $sql = "insert into product_prices values(" . $maximumProductPriceId . "," . $product_id . ",'" . $price["costPrice"] . "','" . $price["stock"] . "','" . $price["gst"] . "','" . $price["sellingPrice"]. "','" . $doubledParlourPrice. "','" . $price["batchNumber"] . "')";
         if (!mysqli_query($con, $sql)) {
             $isUploaded = false;
         }

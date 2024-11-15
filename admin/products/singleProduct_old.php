@@ -145,12 +145,12 @@ function getProductData($productId, $con)
                 <div class="error-text" data-id="txtquantity">Cannot leave this field blank</div>
             </div>
             <!-- inp group end -->
-            <div class="inp-group">
+            <!-- <div class="inp-group">
                 <div class="inp-label">Product Code</div>
                 <input type="text" value="<?php echo $productData["product_code"]; ?>" class="inp required"
                     value="1000110" id="txtcode" placeholder="product Code" data-id="txtcode" />
                 <div class="error-text" data-id="txtcode">Cannot leave this field blank</div>
-            </div>
+            </div> -->
             <!-- inp group end -->
             <div class="inp-group">
                 <div class="inp-label">Product Cost Price</div>

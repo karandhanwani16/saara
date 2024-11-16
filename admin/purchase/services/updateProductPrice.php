@@ -19,6 +19,7 @@ $costPrice = $data["costprice"];
 $gstPercentage = $data["gstpercentage"];
 $sellingPrice = $data["sellingprice"];
 $parlourPrice = $data["parlourprice"];
+$batchNumber = $data["batchnumber"];
 $barcode = $data["barcode"];
 
 //upload all the images
@@ -27,7 +28,7 @@ try {
     $productId = getProductIdFromBarcode($barcode, $con);
     if (!checkIfPriceExist($productId, $con, $costPrice)) {
         $maxProductPriceId = getCurrentId("product_prices_id", "product_prices", $con);
-        $query = "insert into product_prices values(" . $maxProductPriceId . "," . $productId . ",'" . $costPrice . "','" . 0 . "','" . $gstPercentage . "'," . $sellingPrice . ",'" . $parlourPrice . "')";
+        $query = "insert into product_prices values(" . $maxProductPriceId . "," . $productId . ",'" . $costPrice . "','" . 0 . "','" . $gstPercentage . "'," . $sellingPrice . ",'" . $parlourPrice . "','" . $batchNumber . "')";
         if (mysqli_query($con, $query)) {
                 addLog("price", "created", "Product Price ID: " . $maxProductPriceId . " Price: " . $costPrice . " <br/>created by: " . getUserNameFromUserId($user_id, $con), $con);
                 $finalObject->status = "success";

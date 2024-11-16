@@ -1,5 +1,8 @@
 const purchaseInvoiceTable = new PurchaseTable();
 
+// add new Product button
+const addNewProduct=document.getElementById('addNewProduct');
+
 // purchase popup
 const popup = document.getElementById('purchasePopup');
 const popupBackground = document.getElementById('purchasePopupBackground');
@@ -13,6 +16,9 @@ const newPricePopup = document.getElementById('priceEditPopup');
 const pricePopupBackground = document.getElementById('priceEditPopupBackground');
 
 const addedPrice = document.getElementById('editProductPrice');
+
+// generate new barcode for new price
+const generateBarcodeBtn = document.getElementById('editGenerateBarcode');
 
 // closing add purchase
 const cancelAddPurchase = document.getElementById('cancelPurchase');
@@ -31,6 +37,10 @@ let gstValue;
 let currentPopupDetails;
 let currentObj = {}; 
 
+// Redirect to Product Page
+function redirectToProduct(){
+    window.location.href = "../products/productsUpload.php?redirected=true";
+}
 
 // Add Barcode Flow
 function openAddPurchasePopup() {
@@ -187,8 +197,9 @@ function AddPriceInDB() {
     const gstPercentage = document.getElementById('purchasegstpercentage');
     const sellingPrice = document.getElementById('purchasesellingprice');
     const parlourPrice = document.getElementById('purchaseparlourprice');
+    const batchNumber = document.getElementById('purchasebatchnumber');
     const productBarcode = document.getElementById('txtbarcode');
-    if (!costPrice.value || !gstPercentage.value || !sellingPrice.value || !parlourPrice.value) {
+    if (!costPrice.value || !gstPercentage.value || !sellingPrice.value || !parlourPrice.value || !batchNumber.value) {
         showAlert('Please fill in all price fields', 'error');
         return;
     }
@@ -200,12 +211,14 @@ function AddPriceInDB() {
             "gstpercentage": 0,
             "sellingprice": 0,
             "parlourprice": 0,
+            "batchnumber":0,
             "barcode": productBarcode.value
         };
         productObject.costprice = costPrice.value;
         productObject.gstpercentage = gstPercentage.value;
         productObject.sellingprice = sellingPrice.value;
         productObject.parlourprice = parlourPrice.value;
+        productObject.batchnumber = parlourPrice.value;
         productObject.barcode = productBarcode.value;
         //productObject.rows = purchaseInvoiceTable.invoiceRows;
 
@@ -219,6 +232,7 @@ function AddPriceInDB() {
                     gstPercentage.value = '';
                     sellingPrice.value = '';
                     parlourPrice.value = '';
+                    batchNumber.value='';
                     openAddPurchasePopup();
                 }
                 else {
@@ -230,6 +244,15 @@ function AddPriceInDB() {
         xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
         xmlhttp.send("data=" + JSON.stringify(productObject));
     }
+}
+
+// Generate barcode for new price
+function newPriceBarcode(){
+    const sellingPrice = document.getElementById("purchasesellingprice").value;
+    const parlourPrice = document.getElementById("purchaseparlourprice").value;
+    const batchNumber = document.getElementById("purchasebatchnumber").value;
+    debugger;
+    generateBarcodeMain(sellingPrice, parlourPrice,batchNumber); 
 }
 
 // General Functions
@@ -245,17 +268,25 @@ function closeAddPurchasePopup() {
 
 // Event Listeners
 
+// Redirect to product page
+addNewProduct.addEventListener('click',redirectToProduct);
+
 // Add Barcode
 addPurchase.addEventListener('click', openAddPurchasePopup);
 
 // Add Purchase
 addPurchaseToTable.addEventListener('click', addPurchaseTable);
 
+//generate new price barcode 
+
+
 // Add New Price
 dropdown.addEventListener('change', visibleAddPriceBtn);
 addNewPrice.addEventListener('click', openAddPricePopup);
 addedPrice.addEventListener('click', AddPriceInDB);
 
+// generate barcode for new price
+generateBarcodeBtn.addEventListener('click',newPriceBarcode);
 
 // Close Add Price
 cancelAddPrice.addEventListener('click', closeAddPricePopup);

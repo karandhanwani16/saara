@@ -5,6 +5,7 @@ include("../../services/utils/generalFunctions.php");
 session_start();
 $user_id = $_SESSION["user_id"];
 
+$redirected = isset($_GET['redirected']) && $_GET['redirected'] === 'true';
 ?>
 
 <!DOCTYPE html>
@@ -70,6 +71,11 @@ $user_id = $_SESSION["user_id"];
 
 <body>
 
+
+    <div onclick="window.history.back()" class="back-btn"
+        style="display: <?php echo $redirected ? 'block' : 'none'; ?>">
+        <img src='../assets/icons/back.svg' alt=''>
+    </div>
     <div class="alert--cont">
     </div>
 
@@ -148,14 +154,19 @@ $user_id = $_SESSION["user_id"];
                         <!-- Form row for adding new product details -->
 
                         <tr class="controls-row">
-                            <td><input type="text" value="100" id="txtCostPrice" class="inp" placeholder="Enter Cost Price" /></td>
-                            <td><input type="text" value="10" id="txtStock" class="inp" placeholder="Enter Stock" /></td>
+                            <td><input type="text" value="100" id="txtCostPrice" class="inp"
+                                    placeholder="Enter Cost Price" /></td>
+                            <td><input type="text" value="10" id="txtStock" class="inp" placeholder="Enter Stock" />
+                            </td>
                             <td><input type="text" value="18" id="txtGST" class="inp" placeholder="Enter GST %" /></td>
-                            <td><input type="text" value="118" id="txtSellingPrice" class="inp" placeholder="Enter Selling Price" />
+                            <td><input type="text" value="118" id="txtSellingPrice" class="inp"
+                                    placeholder="Enter Selling Price" />
                             </td>
-                            <td><input type="text" value="109" id="txtParlourPrice" class="inp" placeholder="Enter Parlour Price" />
+                            <td><input type="text" value="109" id="txtParlourPrice" class="inp"
+                                    placeholder="Enter Parlour Price" />
                             </td>
-                            <td><input type="text" value="Abc" id="txtBatchNumber" class="inp" placeholder="Enter Batch Number" />
+                            <td><input type="text" value="Abc" id="txtBatchNumber" class="inp"
+                                    placeholder="Enter Batch Number" />
                             </td>
                             <td><button type="button" id="addPriceStock" class="btn action-btn">Add</button></td>
                         </tr>

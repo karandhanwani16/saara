@@ -19,6 +19,8 @@ $date = $data["date"];
 $supplier = $data["supplier"];
 $purchaseNo = $data["purchaseNo"];
 $amount = $data["amount"];
+$signedBy= $data["signedby"];
+$purchaseType = $data["purchasetype"];
 $rows = $data["rows"];
 
 //upload all the images
@@ -26,7 +28,7 @@ $rows = $data["rows"];
 try {
     if (!checkIfPurchaseNoExist($purchaseNo, $date, $supplier, $con)) {
         $maxPurchaseId = getCurrentId("purchase_id", "purchase", $con);
-        $query = "insert into purchase values(" . $maxPurchaseId . "," . $supplier . ",'" . $purchaseNo . "','" . $date . "','" . $amount . "'," . $user_id . ",'" . getCurrentTimestamp() . "'," . $user_id . ",'" . getCurrentTimestamp() . "')";
+        $query = "insert into purchase values(" . $maxPurchaseId . "," . $supplier . ",'" . $purchaseNo . "','" . $date . "','" . $amount . "','" . $signedBy . "','" . $purchaseType . "'," . $user_id . ",'" . getCurrentTimestamp() . "'," . $user_id . ",'" . getCurrentTimestamp() . "')";
         if (mysqli_query($con, $query)) {
             if (uploadPurchaseItems($rows, $maxPurchaseId, $con)) {
                 addLog("purchase", "created", "Purchase ID: " . $maxPurchaseId . " Supplier: " . getColumnValueFromTable("supplier_name", "supplier", "supplier_id", $supplier, $con) . " Date: " . formatDateForView($date) . " Amount: " . $amount . " <br/>created by: " . getUserNameFromUserId($user_id, $con), $con);

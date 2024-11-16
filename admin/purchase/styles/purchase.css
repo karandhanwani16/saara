@@ -8,7 +8,12 @@ body {
 
 .row-3 {
     width: 90%;
-    gap: 20vh;
+    gap: 8vw;
+}
+
+.row-2{
+    width: 57.5%;
+    gap: 8vw;
 }
 
 .inp {

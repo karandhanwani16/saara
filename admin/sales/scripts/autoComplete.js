@@ -1,9 +1,9 @@
-const searchInput = document.querySelector('#txtcustomername');
+const searchInput = document.querySelector('#customer-name');
 const autoCompleteCont = document.querySelector('.auto--complete');
 const resultCont = document.querySelector('.result--cont');
 let isSearchOpen = false;
-let customerAddress = document.querySelector("#txtcustomeraddress");
-let customerGST = document.querySelector("#txtcustomergst");
+let customerEmail = document.querySelector("#customer-email");
+let customerPhone = document.querySelector("#customer-phone");
 
 function loadSearchResult(data) {
     resultCont.innerHTML = '';
@@ -16,8 +16,8 @@ function loadSearchResult(data) {
         searchResultDiv.addEventListener('click', e => {
             searchInput.value = e.target.innerText;
             resultCont.classList.add('hidden');
-            customerAddress.value = "";
-            customerGST.value = "";
+            customerEmail.value = "";
+            customerPhone.value = "";
             loadCustomerDetails(e.target.innerText);
             hideSearchInput();
         })
@@ -36,8 +36,8 @@ async function loadCustomerDetails(customerName) {
 }
 
 function loadCustomerDetailsView(data) {
-    customerAddress.value = data.address;
-    customerGST.value = data.gst;
+    customerEmail.value = data.email;
+    customerPhone.value = data.phone;
 }
 
 function getCustomerDetails(customerName) {
@@ -92,8 +92,8 @@ function hideSearchInput() {
 }
 
 searchInput.addEventListener('keyup', e => {
-    customerAddress.value = "";
-    customerGST.value = "";
+    customerEmail.value = "";
+    customerPhone.value = "";
     fetchCustomerData(e.target.value);
 })
 

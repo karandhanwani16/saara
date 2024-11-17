@@ -51,6 +51,7 @@ $discountType = $saleDetails['discountType'];
 $cashAmount = $paymentDetails['cashAmount'];
 $upiAmount = $paymentDetails['upiAmount'];
 $cardAmount = $paymentDetails['cardAmount'];
+$cardCharges = $paymentDetails['cardCharges'];
 
 // Process total details
 $totalBeforeTax = $totalDetails['grossTotal'];
@@ -71,7 +72,7 @@ try {
     $stockDetails = checkStock($saleRows, $con);
 
     if ($stockDetails->isStockAvailable) {
-        $query = "insert into sales values($maximumSaleId, '$saleDate', '$salesAttendedBy','$customerName', '$customerPhone', '$customerEmail', '$discount', '$discountType', '$cashAmount', '$upiAmount', '$cardAmount','$totalBeforeTax','$totalSgst','$totalCgst','$totalIgst','$totalBeforeDiscount','$totalDiscount','$finalDiscount','$roundOff','$netTotal','" . getCurrentTimestamp() . "'," . $user_id . ",'" . getCurrentTimestamp() . "'," . $user_id . ");";
+        $query = "insert into sales values($maximumSaleId, '$saleDate', '$salesAttendedBy','$customerName', '$customerPhone', '$customerEmail', '$discount', '$discountType', '$cashAmount', '$upiAmount', '$cardAmount','$cardCharges','$totalBeforeTax','$totalSgst','$totalCgst','$totalIgst','$totalBeforeDiscount','$totalDiscount','$finalDiscount','$roundOff','$netTotal','" . getCurrentTimestamp() . "'," . $user_id . ",'" . getCurrentTimestamp() . "'," . $user_id . ");";
 
         if (mysqli_query($con, $query)) {
             // upload sale rows
@@ -89,7 +90,8 @@ try {
                         $finalObject->details["customerPhone"] = $customerPhone;
                         $finalObject->details["cashAmount"] = $cashAmount;
                         $finalObject->details["upiAmount"] = $upiAmount;
-                        
+                        $finalObject->details["cardAmount"] = $cardAmount;
+                        $finalObject->details["cardCharges"] = $cardCharges;
                         $finalObject->details["total"] = $netTotal;
                     } else {
                         $finalObject->status = 'error';

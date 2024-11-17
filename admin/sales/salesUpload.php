@@ -85,9 +85,13 @@
                 <label for="sales-date">Sales date</label>
                 <input type="date" id="sales-date" name="sales-date" value="<?php echo date('Y-m-d'); ?>">
 
-                <label for="customer-name">Customer Name</label>
-                <input type="text" id="customer-name" name="customer-name" placeholder="Customer Name">
-
+                <div class="auto--complete">
+                    <label for="customer-name">Customer Name</label>
+                    <div class="search--cont">
+                        <input type="text" id="customer-name" name="customer-name" placeholder="Customer Name">
+                        <div class="result--cont hidden"></div>
+                    </div>
+                </div>
                 <label for="customer-phone">Customer Phone</label>
                 <input type="tel" id="customer-phone" name="customer-phone" placeholder="Customer Phone">
 
@@ -326,7 +330,7 @@
     <script src="./scripts/saleTable.js"></script>
 
     <script>
-        
+
         const currentFile = "salesUpload.php";
         const saleTable = new SaleTable();
         var currentSaleId = "";
@@ -366,6 +370,7 @@
     <script src="./scripts/handleStepper.js"></script>
     <script src="./scripts/handleBarcodeScanner.js"></script>
     <script src="./scripts/handleProductSwipes.js"></script>
+    <script src="./scripts/autoComplete.js"></script>
 
 </body>
 

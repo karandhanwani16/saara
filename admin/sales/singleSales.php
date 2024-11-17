@@ -19,8 +19,6 @@ function getSaleDetails($saleId, $con)
     return $result->fetch_assoc();
 }
 
-
-
 ?>
 
 

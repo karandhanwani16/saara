@@ -110,8 +110,8 @@ $currentDate = date('Y-m-d');
                 <div class="error-text" data-id="txtaddproduct">Cannot leave this field blank</div>
             </div>
             <!-- inp group end -->
-            <div class="inp-group">
-                <div class="btn action-btn scan-btn" id="addNewProduct" data-type="addNewProduct">Add New Product</div>
+            <div class="inp-group new-product">
+                <div class="btn action-btn scan-btn add-product-btn" id="addNewProduct" data-type="addNewProduct">Add New Product</div>
             </div>
         </div>
 

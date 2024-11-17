@@ -22,14 +22,14 @@ function openPopup(type, sellingPrice = 0, parlourPrice = 0,batchNumber = 0) {
         // extra details
         const extraDetailsHeader1 = document.querySelector("#extraDetailsHeader1");
         const extraDetailsHeader2 = document.querySelector("#extraDetailsHeader2");
-        const productName = document.querySelector("#productName");
+        const productName =  document.getElementById('productName').textContent;
 
         const batchNumberLeft = document.querySelector("#batchNumberLeft");
         const footerSellingPrice = document.querySelector("#footerSellingPrice");
         const footerParlourPrice = document.querySelector("#footerParlourPrice");
 
         extraDetailsHeader1.innerHTML = `<p class='sara-barcode-logo' >Saara Beauty Centre & Gift</p>`;
-        extraDetailsHeader2.innerHTML = `${productName} `;
+        extraDetailsHeader2.innerHTML = productName ;
         batchNumberLeft.innerHTML = batchNumber;
         footerSellingPrice.innerHTML = sellingPrice;
         footerParlourPrice.innerHTML = parlourPrice*2;

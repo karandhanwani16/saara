@@ -172,6 +172,10 @@ function getSaleDetails($saleId, $con)
                     <span id="roundOff">Rs. -</span>
                 </div>
                 <div class="payment-row">
+                    <span>Card Charges</span>
+                    <span id="cardCharges">Rs. -</span>
+                </div>
+                <div class="payment-row">
                     <span>Total</span>
                     <span id="totalAfterDiscount">Rs. -</span>
                 </div>
@@ -183,6 +187,11 @@ function getSaleDetails($saleId, $con)
                 <label for="amount-upi">Amount in UPI</label>
                 <input type="text" value="<?php echo $saleDetails['upi_amount']; ?> " id="amount-upi" name="amount-upi" placeholder="Amount in UPI">
 
+                <label for="amount-card">Amount in Card</label>
+                <input type="text" value="<?php echo $saleDetails['card_amount']; ?> " id="amount-card" name="amount-card" placeholder="Amount in Card">
+
+                <label for="card-charges">Card Charges</label>
+                <input type="text" value="<?php echo $saleDetails['card_charges']; ?> " id="card-charges" name="card-charges" placeholder="Card Charges">
 
             </form>
         </div>
@@ -359,7 +368,9 @@ function getSaleDetails($saleId, $con)
 
         const paymentDetails = {
             "cashAmount": "",
-            "upiAmount": ""
+            "upiAmount": "",
+            "cardAmount": "",
+            "cardCharges": ""
         }
 
         const totalDetails = {

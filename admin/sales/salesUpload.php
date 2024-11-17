@@ -27,7 +27,8 @@
             <div class="retry-cont">
                 <div class="icon" aria-hidden="true">&#9888;</div>
                 <h1>Oops! Upload Failed</h1>
-                <p>We encountered an issue while uploading your sale. This could be due to a network problem or a temporary server issue. Don't worry, your data is safe. Please try again.</p>
+                <p>We encountered an issue while uploading your sale. This could be due to a network problem or a
+                    temporary server issue. Don't worry, your data is safe. Please try again.</p>
                 <button class="retry-button" id="retryBtn">Retry Upload</button>
             </div>
         </div>
@@ -144,6 +145,10 @@
                     <span id="roundOff">Rs. -</span>
                 </div>
                 <div class="payment-row">
+                    <span>Card Charges</span>
+                    <span id="cardCharges">Rs. -</span>
+                </div>
+                <div class="payment-row">
                     <span>Total</span>
                     <span id="totalAfterDiscount">Rs. -</span>
                 </div>
@@ -155,7 +160,11 @@
                 <label for="amount-upi">Amount in UPI</label>
                 <input type="text" value="0" id="amount-upi" name="amount-upi" placeholder="Amount in UPI">
 
+                <label for="amount-card" id="amount-card-label">Amount In Card</label>
+                <input type="text" value="0" id="amount-card" name="amount-card" placeholder="Amount In Card">
 
+                <label for="card-charges">Card Charges</label>
+                <input type="text" value="0" id="card-charges" name="card-charges" placeholder="Card Charges">
             </form>
         </div>
 
@@ -211,7 +220,7 @@
                 Finalize Cart
             </button>
         </div>
-        
+
     </div>
 
     <!-- Barcode Scanner Popup -->
@@ -317,6 +326,7 @@
     <script src="./scripts/saleTable.js"></script>
 
     <script>
+        
         const currentFile = "salesUpload.php";
         const saleTable = new SaleTable();
         var currentSaleId = "";
@@ -325,14 +335,16 @@
             "customerName": "",
             "customerPhone": "",
             "customerEmail": "",
-            "salesAttendedBy":"",
+            "salesAttendedBy": "",
             "discount": "",
-            "discountType": ""
+            "discountType": "",
         }
 
         const paymentDetails = {
             "cashAmount": "",
-            "upiAmount": ""
+            "upiAmount": "",
+            "cardAmount": "",
+            "cardCharges": ""
         }
 
         const totalDetails = {
@@ -343,6 +355,7 @@
             "totalBeforeDiscount": "",
             "discountTotal": "",
             "roundOff": "",
+            "cardCharges": "",
             "netTotal": ""
         }
     </script>

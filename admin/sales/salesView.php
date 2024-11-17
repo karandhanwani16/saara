@@ -49,6 +49,7 @@
                             <th>Total</th>
                             <th>Cash Amount</th>
                             <th>UPI Amount</th>
+                            <th>Card Amount</th>
                             <th>Product Discount</th>
                             <th>Final Discount</th>
                             <th>Created By</th>

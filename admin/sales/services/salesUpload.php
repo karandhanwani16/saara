@@ -22,6 +22,7 @@ $finalObject->details = [
     "customerPhone" => '',
     "cashAmount" => '',
     "upiAmount" => '',
+    "cardAmount" => '',
     "total" => 0
 ];
 
@@ -42,13 +43,14 @@ $saleDate = $saleDetails['saleDate'];
 $customerName = $saleDetails['customerName'];
 $customerPhone = $saleDetails['customerPhone'];
 $customerEmail = $saleDetails['customerEmail'];
-$salesAttendedBy= $saleDetails['salesAttendedBy'];
+$salesAttendedBy = $saleDetails['salesAttendedBy'];
 $discount = $saleDetails['discount'];
 $discountType = $saleDetails['discountType'];
 
 // Process payment details
 $cashAmount = $paymentDetails['cashAmount'];
 $upiAmount = $paymentDetails['upiAmount'];
+$cardAmount = $paymentDetails['cardAmount'];
 
 // Process total details
 $totalBeforeTax = $totalDetails['grossTotal'];
@@ -69,7 +71,7 @@ try {
     $stockDetails = checkStock($saleRows, $con);
 
     if ($stockDetails->isStockAvailable) {
-        $query = "insert into sales values($maximumSaleId, '$saleDate', '$salesAttendedBy','$customerName', '$customerPhone', '$customerEmail', '$discount', '$discountType', '$cashAmount', '$upiAmount','$totalBeforeTax','$totalSgst','$totalCgst','$totalIgst','$totalBeforeDiscount','$totalDiscount','$finalDiscount','$roundOff','$netTotal','" . getCurrentTimestamp() . "'," . $user_id . ",'" . getCurrentTimestamp() . "'," . $user_id . ");";
+        $query = "insert into sales values($maximumSaleId, '$saleDate', '$salesAttendedBy','$customerName', '$customerPhone', '$customerEmail', '$discount', '$discountType', '$cashAmount', '$upiAmount', '$cardAmount','$totalBeforeTax','$totalSgst','$totalCgst','$totalIgst','$totalBeforeDiscount','$totalDiscount','$finalDiscount','$roundOff','$netTotal','" . getCurrentTimestamp() . "'," . $user_id . ",'" . getCurrentTimestamp() . "'," . $user_id . ");";
 
         if (mysqli_query($con, $query)) {
             // upload sale rows
@@ -78,15 +80,21 @@ try {
                 // manage stock 
 
                 if (updateStock($saleRows, $con)) {
-                    $finalObject->status = 'success';
-                    $finalObject->message = 'Sale uploaded successfully';
-                    $finalObject->details["saleId"] = $maximumSaleId;
-                    $finalObject->details["saleDate"] = $saleDate;
-                    $finalObject->details["customerName"] = $customerName;
-                    $finalObject->details["customerPhone"] = $customerPhone;
-                    $finalObject->details["cashAmount"] = $cashAmount;
-                    $finalObject->details["upiAmount"] = $upiAmount;
-                    $finalObject->details["total"] = $netTotal;
+                    if (uploadCustomerDetails($customerName, $customerPhone, $customerEmail, $con)) {
+                        $finalObject->status = 'success';
+                        $finalObject->message = 'Sale uploaded successfully';
+                        $finalObject->details["saleId"] = $maximumSaleId;
+                        $finalObject->details["saleDate"] = $saleDate;
+                        $finalObject->details["customerName"] = $customerName;
+                        $finalObject->details["customerPhone"] = $customerPhone;
+                        $finalObject->details["cashAmount"] = $cashAmount;
+                        $finalObject->details["upiAmount"] = $upiAmount;
+                        
+                        $finalObject->details["total"] = $netTotal;
+                    } else {
+                        $finalObject->status = 'error';
+                        $finalObject->message = 'Error #1006';
+                    }
                 } else {
                     $finalObject->status = 'error';
                     $finalObject->message = 'Error #1005';
@@ -110,4 +118,19 @@ try {
 
 
 echo json_encode($finalObject);
+
+function uploadCustomerDetails($customerName, $customerPhone, $customerEmail, $con)
+{
+    $customerUploadStatus = true;
+    $maximumCustomerId = getCurrentId('customer_id', 'customers', $con);
+    $checkQuery = "select customer_phone from customers where customer_phone = '$customerPhone'";
+    $result = mysqli_query($con, $checkQuery);
+    if (mysqli_num_rows($result) <= 0) {
+        $query = "insert into customers values($maximumCustomerId, '$customerName', '$customerEmail','$customerPhone');";
+        if (!mysqli_query($con, $query)) {
+            $customerUploadStatus = false;
+        }
+    }
+    return $customerUploadStatus;
+}
 

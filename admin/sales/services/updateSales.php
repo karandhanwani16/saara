@@ -23,6 +23,7 @@ $finalObject->details = [
     "customerPhone" => '',
     "cashAmount" => '',
     "upiAmount" => '',
+    "cardAmount" => '',
     "total" => 0
 ];
 
@@ -50,6 +51,7 @@ $discountType = $saleDetails['discountType'];
 // Process payment details
 $cashAmount = $paymentDetails['cashAmount'];
 $upiAmount = $paymentDetails['upiAmount'];
+$cardAmount = $paymentDetails['cardAmount'];
 
 // Process total details
 $totalBeforeTax = $totalDetails['grossTotal'];
@@ -72,7 +74,7 @@ try {
         $deleteQuery = "delete from sale_items where sale_id = $currentSaleId";
         if (mysqli_query($con, $deleteQuery)) {
             // Update the sale table
-            $updateQuery = "update sales set sale_date = '$saleDate', sales_attended_by='$salesAttendedBy', customer_name = '$customerName', customer_phone = '$customerPhone', customer_email = '$customerEmail', discount = '$discount', discount_type = '$discountType', cash_amount = '$cashAmount', upi_amount = '$upiAmount',sale_total_before_tax = '$totalBeforeTax',sale_sgst_amount = '$totalSgst',sale_cgst_amount = '$totalCgst',sale_igst_amount = '$totalIgst',sale_total_after_tax = '$totalBeforeDiscount',sale_discount_amount = '$totalDiscount',sale_final_discount_amount = '$finalDiscount',sale_roundoff = '$roundOff',sale_net_amount = '$netTotal',sale_updated_at = '" . getCurrentTimestamp() . "',sale_updated_by = $user_id where sale_id = $currentSaleId";
+            $updateQuery = "update sales set sale_date = '$saleDate', sales_attended_by='$salesAttendedBy', customer_name = '$customerName', customer_phone = '$customerPhone', customer_email = '$customerEmail', discount = '$discount', discount_type = '$discountType', cash_amount = '$cashAmount', upi_amount = '$upiAmount', card_amount = '$cardAmount',sale_total_before_tax = '$totalBeforeTax',sale_sgst_amount = '$totalSgst',sale_cgst_amount = '$totalCgst',sale_igst_amount = '$totalIgst',sale_total_after_tax = '$totalBeforeDiscount',sale_discount_amount = '$totalDiscount',sale_final_discount_amount = '$finalDiscount',sale_roundoff = '$roundOff',sale_net_amount = '$netTotal',sale_updated_at = '" . getCurrentTimestamp() . "',sale_updated_by = $user_id where sale_id = $currentSaleId";
 
             if (mysqli_query($con, $updateQuery)) {
                 // Insert new sale items
@@ -87,6 +89,7 @@ try {
                         $finalObject->details["customerPhone"] = $customerPhone;
                         $finalObject->details["cashAmount"] = $cashAmount;
                         $finalObject->details["upiAmount"] = $upiAmount;
+                        $finalObject->details["cardAmount"] = $cardAmount;
                         $finalObject->details["total"] = $netTotal;
                     } else {
                         $finalObject->status = 'error';

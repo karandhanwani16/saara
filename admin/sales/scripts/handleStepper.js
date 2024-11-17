@@ -216,9 +216,13 @@ const isCustomerDetailsValid = () => {
     const customerName = document.getElementById('customer-name');
     const customerPhone = document.getElementById('customer-phone');
     const customerEmail = document.getElementById('customer-email');
-    const salesAttendedBy=document.getElementById('sales-attended-by');
+    const salesAttendedBy = document.getElementById('sales-attended-by');
     const discount = document.getElementById('discount');
     const discountType = document.getElementById('discount-type');
+
+    const cashAmount = document.getElementById('amount-cash');
+    const upiAmount = document.getElementById('amount-upi');
+    const cardAmount = document.getElementById('amount-card');
 
     if (discountType.value == 'percentage') {
         if (discount.value > 100) {
@@ -240,10 +244,9 @@ const isCustomerDetailsValid = () => {
     saleDetails.customerName = customerName.value;
     saleDetails.customerPhone = customerPhone.value;
     saleDetails.customerEmail = customerEmail.value;
-    saleDetails.salesAttendedBy= salesAttendedBy.value;
+    saleDetails.salesAttendedBy = salesAttendedBy.value;
     saleDetails.discount = discount.value;
     saleDetails.discountType = discountType.value;
-
     return {
         "status": "success",
         "message": "Customer details are valid"
@@ -253,22 +256,27 @@ const isCustomerDetailsValid = () => {
 const isPaymentDetailsValid = () => {
     const cashAmount = document.getElementById('amount-cash');
     const upiAmount = document.getElementById('amount-upi');
+    const cardAmount = document.getElementById('amount-card');
+    const cardCharges = document.getElementById('card-charges');
 
-    if (cashAmount.value == '' || upiAmount.value == '') {
+
+    if (cashAmount.value == '' || upiAmount.value == '' || cardAmount.value == '') {
         return {
             "status": "error",
             "message": "Please fill all the fields"
         }
     }
-
-    if ((parseFloat(cashAmount.value) + parseFloat(upiAmount.value)) != totalDetails.netTotal) {
+    if ((parseFloat(cashAmount.value) + parseFloat(upiAmount.value) + parseFloat(cardAmount.value) + parseFloat(cardCharges.value)) != totalDetails.netTotal) {
         return {
             "status": "error",
             "message": "Please Enter Correct Amount"
         }
     }
+
     paymentDetails.cashAmount = cashAmount.value;
     paymentDetails.upiAmount = upiAmount.value;
+    paymentDetails.cardAmount = cardAmount.value;
+    paymentDetails.cardCharges = cardCharges.value;
     return {
         "status": "success",
         "message": "Payment details are valid"
@@ -282,8 +290,6 @@ const calculateOtherDetails = (currentStep) => {
 }
 
 const calculatePaymentDetails = () => {
-
-
     // for every product in the sale table calculate sale price * quantity - cgst amount - sgst amount - igst amount - discount amount
 
     const totals = saleTable.rows.reduce((acc, saleItem) => {
@@ -302,7 +308,6 @@ const calculatePaymentDetails = () => {
         const discount = saleItem.discountType === 'percentage'
             ? rowTotal * (saleItem.discount / 100)
             : saleItem.discount;
-
         const netTotal = rowTotal - discount;
 
         return {
@@ -326,24 +331,25 @@ const calculatePaymentDetails = () => {
 
     totals.netTotal = totals.netTotal - finalDiscount;
 
+    // const cardCharges = parseFloat(document.getElementById('cardCharges').textContent.replace('Rs. ', '')) || 0;
+    // totals.netTotal = totals.netTotal;
+
     const roundOff = Number((parseFloat(totals.netTotal) - parseInt(totals.netTotal)).toFixed(2));
     // const netTotal = Number((totals.netTotal + roundOff).toFixed(2));
     const netTotal = roundOff > 0.5 ? parseInt(totals.netTotal) + 1 : parseInt(totals.netTotal);
 
 
-    document.getElementById('orderTotalBeforeTax').textContent = totals.grossTotal;
-    document.getElementById('sGstTotal').textContent = totals.sGstTotal;
-    document.getElementById('cGstTotal').textContent = totals.cGstTotal;
-    document.getElementById('iGstTotal').textContent = totals.iGstTotal;
-    document.getElementById('totalBeforeDiscount').textContent = (totals.grossTotal + totals.sGstTotal + totals.cGstTotal + totals.iGstTotal).toFixed(2);
-    document.getElementById('finalDiscount').textContent = finalDiscount.toFixed(2);
-    document.getElementById('discountTotal').textContent = totals.discountTotal;
+    document.getElementById('orderTotalBeforeTax').textContent = `Rs. ${totals.grossTotal}`;
+    document.getElementById('sGstTotal').textContent = `Rs. ${totals.sGstTotal}`;
+    document.getElementById('cGstTotal').textContent = `Rs. ${totals.cGstTotal}`;
+    document.getElementById('iGstTotal').textContent = `Rs. ${totals.iGstTotal}`;
+    document.getElementById('totalBeforeDiscount').textContent = `Rs. ${(totals.grossTotal + totals.sGstTotal + totals.cGstTotal + totals.iGstTotal).toFixed(2)}`;
+    document.getElementById('finalDiscount').textContent = `Rs. ${finalDiscount.toFixed(2)}`;
+    document.getElementById('discountTotal').textContent = `Rs. ${totals.discountTotal}`;
+    document.getElementById('roundOff').textContent = `Rs. ${roundOff > 0.5 ? roundOff : -1 * roundOff}`;
+    document.getElementById('totalAfterDiscount').textContent = `Rs. ${netTotal}`;
 
-
-
-    document.getElementById('roundOff').textContent = roundOff > 0.5 ? roundOff : -1 * roundOff;
-    document.getElementById('totalAfterDiscount').textContent = netTotal;
-
+    // Update total details object
     totalDetails.grossTotal = totals.grossTotal;
     totalDetails.sGstTotal = totals.sGstTotal;
     totalDetails.cGstTotal = totals.cGstTotal;
@@ -389,8 +395,11 @@ const createNewSale = async () => {
 
             const cashAmount = parseFloat(response.details.cashAmount);
             const upiAmount = parseFloat(response.details.upiAmount);
+            const cardAmount = parseFloat(response.details.cardAmount);
 
-            document.getElementById('paymentMode').textContent = cashAmount > 0 && upiAmount > 0 ? 'Cash,UPI' : cashAmount > 0 ? 'Cash' : 'UPI';
+            document.getElementById('paymentMode').textContent = document.getElementById('paymentMode').textContent =
+                cashAmount > 0 && upiAmount > 0 ? 'Cash,UPI' : cashAmount > 0 ? 'Cash' : upiAmount > 0 ? 'UPI' : cardAmount > 0 ? 'Card' : '';
+
             document.getElementById('orderTotal').textContent = response.details.total;
 
             if (response.status == 'success') {
@@ -418,3 +427,21 @@ const calculateFinalDiscount = (total, discount, discountType) => {
     const finalDiscount = discountType == 'percentage' ? total * (discount / 100) : discount;
     return parseFloat(finalDiscount);
 }
+
+let previousCardCharges = 0;  // Variable to store the previous card charges
+
+document.getElementById('amount-card').addEventListener('input', function () {
+    const cardPayment = parseFloat(this.value) || 0; 
+    const cardCharges = (cardPayment * 0.02).toFixed(2);
+    
+    document.getElementById('card-charges').value = cardCharges;
+    document.getElementById('cardCharges').textContent = `Rs. ${cardCharges}`;
+
+    totalDetails.netTotal = parseFloat((totalDetails.netTotal - previousCardCharges + parseFloat(cardCharges)).toFixed(2));
+
+    document.getElementById('totalAfterDiscount').textContent = `Rs. ${totalDetails.netTotal}`;
+
+    previousCardCharges = parseFloat(cardCharges);
+
+    isPaymentDetailsValid();
+});

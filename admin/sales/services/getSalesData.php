@@ -7,9 +7,9 @@ $user_id = $_SESSION["user_id"];
 
 
 
-$column = array("sale_id", "sale_date", "sales_attended_by","customer_name", "sale_net_amount", "cash_amount", "upi_amount","sale_discount_amount","sale_final_discount_amount", "sale_created_by", "sale_updated_by");
+$column = array("sale_id", "sale_date", "sales_attended_by","customer_name", "sale_net_amount", "cash_amount", "upi_amount", "card_amount", "sale_discount_amount","sale_final_discount_amount", "sale_created_by", "sale_updated_by");
 
-$query = "select sale_id,sale_date,sales_attended_by,customer_name,sale_net_amount,cash_amount,upi_amount,sale_discount_amount,sale_final_discount_amount,sale_created_by,sale_updated_by from sales";
+$query = "select sale_id,sale_date,sales_attended_by,customer_name,sale_net_amount,cash_amount,upi_amount,card_amount,sale_discount_amount,sale_final_discount_amount,sale_created_by,sale_updated_by from sales";
 
 if (isset($_POST["search"]["value"])) {
     // $query .= ' where category_id like "%' . $_POST["search"]["value"] . '%" or category_name like "%' . $_POST["search"]["value"] . '%"';
@@ -48,6 +48,7 @@ while ($row = $result->fetch_assoc()) {
     $sub_array[] = moneyFormatIndia($row['sale_net_amount']);
     $sub_array[] = moneyFormatIndia($row['cash_amount']);
     $sub_array[] = moneyFormatIndia($row['upi_amount']);
+    $sub_array[] = moneyFormatIndia($row['card_amount']);
     $sub_array[] = moneyFormatIndia($row['sale_discount_amount']);
     $sub_array[] = moneyFormatIndia($row['sale_final_discount_amount']);
     $sub_array[] = getUserNameFromUserId($row['sale_created_by'],$con);

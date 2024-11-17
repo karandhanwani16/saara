@@ -44,6 +44,7 @@
                             <th>Delete</th>
                             <th>Download</th>
                             <th>Date</th>
+                            <th>Sales Attended By</th>
                             <th>Customer</th>
                             <th>Total</th>
                             <th>Cash Amount</th>

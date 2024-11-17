@@ -21,7 +21,6 @@
 
     <!-- alert cont end -->
 
-
     <div class="container">
 
         <div id="retryMainCont" class="hidden">
@@ -93,6 +92,9 @@
 
                 <label for="customer-email">Customer Email</label>
                 <input type="email" id="customer-email" name="customer-email" placeholder="Customer Email">
+
+                <label for="sales-attended-by">Sales Attended By</label>
+                <input type="text" id="sales-attended-by" name="sales-attended-by" placeholder="Sales Attended By">
 
                 <label for="discount">Discount</label>
                 <input type="text" value="0" id="discount" name="discount" placeholder="Discount">
@@ -323,6 +325,7 @@
             "customerName": "",
             "customerPhone": "",
             "customerEmail": "",
+            "salesAttendedBy":"",
             "discount": "",
             "discountType": ""
         }

@@ -42,6 +42,7 @@ $saleDate = $saleDetails['saleDate'];
 $customerName = $saleDetails['customerName'];
 $customerPhone = $saleDetails['customerPhone'];
 $customerEmail = $saleDetails['customerEmail'];
+$salesAttendedBy= $saleDetails['salesAttendedBy'];
 $discount = $saleDetails['discount'];
 $discountType = $saleDetails['discountType'];
 
@@ -68,7 +69,7 @@ try {
     $stockDetails = checkStock($saleRows, $con);
 
     if ($stockDetails->isStockAvailable) {
-        $query = "insert into sales values($maximumSaleId, '$saleDate', '$customerName', '$customerPhone', '$customerEmail', '$discount', '$discountType', '$cashAmount', '$upiAmount','$totalBeforeTax','$totalSgst','$totalCgst','$totalIgst','$totalBeforeDiscount','$totalDiscount','$finalDiscount','$roundOff','$netTotal','" . getCurrentTimestamp() . "'," . $user_id . ",'" . getCurrentTimestamp() . "'," . $user_id . ");";
+        $query = "insert into sales values($maximumSaleId, '$saleDate', '$salesAttendedBy','$customerName', '$customerPhone', '$customerEmail', '$discount', '$discountType', '$cashAmount', '$upiAmount','$totalBeforeTax','$totalSgst','$totalCgst','$totalIgst','$totalBeforeDiscount','$totalDiscount','$finalDiscount','$roundOff','$netTotal','" . getCurrentTimestamp() . "'," . $user_id . ",'" . getCurrentTimestamp() . "'," . $user_id . ");";
 
         if (mysqli_query($con, $query)) {
             // upload sale rows

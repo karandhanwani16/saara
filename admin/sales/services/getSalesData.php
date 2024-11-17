@@ -7,9 +7,9 @@ $user_id = $_SESSION["user_id"];
 
 
 
-$column = array("sale_id", "sale_date", "customer_name", "sale_net_amount", "cash_amount", "upi_amount","sale_discount_amount","sale_final_discount_amount", "sale_created_by", "sale_updated_by");
+$column = array("sale_id", "sale_date", "sales_attended_by","customer_name", "sale_net_amount", "cash_amount", "upi_amount","sale_discount_amount","sale_final_discount_amount", "sale_created_by", "sale_updated_by");
 
-$query = "select sale_id,sale_date,customer_name,sale_net_amount,cash_amount,upi_amount,sale_discount_amount,sale_final_discount_amount,sale_created_by,sale_updated_by from sales";
+$query = "select sale_id,sale_date,sales_attended_by,customer_name,sale_net_amount,cash_amount,upi_amount,sale_discount_amount,sale_final_discount_amount,sale_created_by,sale_updated_by from sales";
 
 if (isset($_POST["search"]["value"])) {
     // $query .= ' where category_id like "%' . $_POST["search"]["value"] . '%" or category_name like "%' . $_POST["search"]["value"] . '%"';
@@ -43,6 +43,7 @@ while ($row = $result->fetch_assoc()) {
     $sub_array[] = "<div class='btn delete-btn' data-id='" . $row["sale_id"] . "'>Delete</div>";
     $sub_array[] = "<div class='btn download-btn' data-id='" . $row["sale_id"] . "'>Download</div>";
     $sub_array[] = formatDateString($row['sale_date']);
+    $sub_array[] = $row['sales_attended_by'];
     $sub_array[] = $row['customer_name'];
     $sub_array[] = moneyFormatIndia($row['sale_net_amount']);
     $sub_array[] = moneyFormatIndia($row['cash_amount']);

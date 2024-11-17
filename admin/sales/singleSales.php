@@ -121,6 +121,9 @@ function getSaleDetails($saleId, $con)
                 <label for="customer-email">Customer Email</label>
                 <input type="email" id="customer-email" name="customer-email" placeholder="Customer Email" value="<?php echo $saleDetails['customer_email']; ?>">
 
+                <label for="sales-attended-by">Sales Attended By</label>
+                <input type="text" id="sales-attended-by" name="sales-attended-by" placeholder="Sales Attended By" value="<?php echo $saleDetails['sales_attended_by']; ?>">
+
                 <label for="discount">Discount</label>
                 <input type="text" id="discount" name="discount" placeholder="Discount" value="<?php echo $saleDetails['discount']; ?>">
 
@@ -349,6 +352,7 @@ function getSaleDetails($saleId, $con)
             "customerName": "",
             "customerPhone": "",
             "customerEmail": "",
+            "salesAttendedBy":"",
             "discount": "",
             "discountType": ""
         }

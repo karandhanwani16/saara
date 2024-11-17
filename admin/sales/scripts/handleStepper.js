@@ -216,6 +216,7 @@ const isCustomerDetailsValid = () => {
     const customerName = document.getElementById('customer-name');
     const customerPhone = document.getElementById('customer-phone');
     const customerEmail = document.getElementById('customer-email');
+    const salesAttendedBy=document.getElementById('sales-attended-by');
     const discount = document.getElementById('discount');
     const discountType = document.getElementById('discount-type');
 
@@ -228,7 +229,7 @@ const isCustomerDetailsValid = () => {
         }
     }
 
-    if (salesDate.value == '' || customerName.value == '' || customerPhone.value == '') {
+    if (salesDate.value == '' || customerName.value == '' || customerPhone.value == '' || salesAttendedBy.value == '') {
         return {
             "status": "error",
             "message": "Please fill all the fields"
@@ -239,6 +240,7 @@ const isCustomerDetailsValid = () => {
     saleDetails.customerName = customerName.value;
     saleDetails.customerPhone = customerPhone.value;
     saleDetails.customerEmail = customerEmail.value;
+    saleDetails.salesAttendedBy= salesAttendedBy.value;
     saleDetails.discount = discount.value;
     saleDetails.discountType = discountType.value;
 

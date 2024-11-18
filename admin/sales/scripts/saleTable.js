@@ -29,6 +29,7 @@ class SaleTable {
     }
 
     showTable() {
+        debugger;
         const productCount = document.getElementById("productCount");
 
         productList.innerHTML = '';
@@ -150,6 +151,7 @@ class SaleTable {
     }
 
     showEditPopup(row) {
+        debugger;
         const editProduct = document.getElementById("editProduct");
         const editPopup = document.getElementById("editPopup");
         const editPopupBackground = document.getElementById("editPopupBackground");
@@ -205,7 +207,7 @@ class SaleTable {
         row.prices.forEach(price => {
             const option = document.createElement('option');
             option.value = price["product_prices_id"];
-            option.textContent = price["product_prices_selling_price"];
+            option.textContent = price["product_prices_selling_price"]+"-"+price["product_prices_batch_number"];
             editProductPriceSelect.appendChild(option);
         });
 
@@ -268,6 +270,7 @@ class SaleTable {
                 r.discount = discount;
                 r.discountType = discountType;
                 r.isIGST = isIGST;
+                r.total = this.calculateTotal(r.price, r.sGstAmount, r.cGstAmount, r.igstAmount, r.quantity, r.discount, r.discountType);
             }
             return r;
         });

@@ -202,7 +202,7 @@ const populatePopup = (product) => {
     prices.forEach(price => {
         const option = document.createElement('option');
         option.value = price["product_prices_id"];
-        option.textContent = price["product_prices_selling_price"];
+        option.textContent = price["product_prices_selling_price"]+"-"+price["product_prices_batch_number"];
         productPriceSelect.appendChild(option);
     });
 
@@ -226,15 +226,14 @@ const populatePopup = (product) => {
         }
     });
 
-    // document.getElementById('productPrice').value = product.price;
-    // Populate other fields as needed
 }
 
 // Step 7: Add Product to Sale
 addPopupProductBtn.addEventListener("click", (e) => {
     e.preventDefault();
     // Get Product Price Text
-    const productPrice = document.getElementById('productPrice').selectedOptions[0].text;
+    const productPriceSelect = document.getElementById('productPrice').selectedOptions[0].text;
+    const productPrice = productPriceSelect.split('-')[0].trim();
     const productPriceId = parseInt(document.getElementById('productPrice').value);
     const quantity = parseInt(document.getElementById('quantity').value);
     const discount = parseFloat(document.getElementById('popupDiscount').value);

@@ -18,6 +18,8 @@ $date = $data["date"];
 $supplier = $data["supplier"];
 $purchaseNo = $data["purchaseNo"];
 $amount = $data["amount"];
+$signedBy= $data["signedby"];
+$purchaseType = $data["purchasetype"];
 $id = $data["id"];
 $rows = $data["rows"];
 
@@ -26,8 +28,7 @@ try {
 
     $oldDetails = getOldDetails($id, $con);
 
-    $query = "update purchase set purchase_date = '" . $date . "', supplier_id = " . $supplier . ", purchase_amount = '" . $amount . "',purchase_updated_by = " . $user_id . ", purchase_updated_at = '" . getCurrentTimestamp() . "' where purchase_id = " . $id;
-
+    $query = "update purchase set purchase_date = '" . $date . "', supplier_id = " . $supplier . ", purchase_signed_by = '" . $signedBy . "', purchase_type = '" . $purchaseType . "', purchase_type = '" . $purchaseType . "', purchase_amount = '" . $amount . "',purchase_updated_by = " . $user_id . ", purchase_updated_at = '" . getCurrentTimestamp() . "' where purchase_id = " . $id;
 
     if (mysqli_query($con, $query)) {
         if (updatePurchaseItems($rows, $id, $con)) {

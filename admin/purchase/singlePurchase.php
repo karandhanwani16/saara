@@ -31,7 +31,7 @@ function getProductBarcode($purchaseRows, $con)
 }
 function getPurchaseData($purchaseId, $con)
 {
-    $query = "select purchase_id,purchase_date,purchase_no,supplier_id from purchase where purchase_id = $purchaseId";
+    $query = "select purchase_id,purchase_date,purchase_no,supplier_id,purchase_type,purchase_signed_by from purchase where purchase_id = $purchaseId";
     $result = $con->query($query);
     $rowCount = $result->num_rows;
     if ($rowCount == 0) {
@@ -72,6 +72,13 @@ function loadSuppliers($alreadySelected, $con)
     while ($row = $result->fetch_assoc()) {
         $options .= "<option " . ($alreadySelected == $row['supplier_id'] ? "selected" : "") . " value='" . $row['supplier_id'] . "' >" . $row['supplier_name'] . "</option>";
     }
+    return $options;
+}
+
+function loadPurchaseType($alreadySelected, $con)
+{
+    $options = "<option " . ($alreadySelected == "cash" ? "selected" : "") . " value='cash'>Cash</option>";
+    $options .= "<option " . ($alreadySelected == "credit" ? "selected" : "") . " value='credit'>Credit</option>";
     return $options;
 }
 
@@ -142,12 +149,30 @@ $currentDate = date('Y-m-d');
             <!-- inp group end -->
         </div>
 
+        <div class="inp-row row-2">
+            <div class="inp-group">
+                <div class="inp-label">Purchase Signed By</div>
+                <input type="text" class="inp required" value="<?php echo $purchaseDetails["purchase_signed_by"] ?>" id="txtpurchasesignedby" placeholder="Purchase Signed By" data-id="txtpurchasesignedby" />
+                <div class="error-text" data-id="txtpurchasesignedby">Cannot leave this field blank</div>
+            </div>
+            <!-- inp group end -->
+            <div class="inp-group">
+                <div class="inp-label">Purchase Type</div>
+                <select class="ddl required" id="ddlpurchasetype" data-id="ddlpurchasetype">
+                    <?php
+                    echo loadPurchaseType($purchaseDetails["purchase_type"], $con);
+                    ?>
+                </select>
+                <div class="error-text" data-id="ddlsupplier">Cannot leave this field blank</div>
+            </div>
+        </div>
+
         <div class="inp-row" id="barcodeRow" style="justify-content: flex-start;gap: 24px;">
             <div class="inp-group">
                 <div class="inp-label hide-sm">Product Barcode</div>
                 <div class="barcode-inp-cont">
                     <input type="text" class="inp hide-sm" onkeypress="return isNumber(event)"
-                        value="<?php echo $productBarcode["product_barcode"] ?>" class="inp required"
+                        value="" class="inp required"
                         onkeypress="return isNumber(event)" id="txtbarcode" placeholder="Product Barcode"
                         data-id="txtbarcode" />
                     <div class="btn action-btn add-purchase-btn hide-sm" id="addpurchase" data-type="add">Add</div>
@@ -155,6 +180,9 @@ $currentDate = date('Y-m-d');
                 </div>
                 <div class="error-text" data-id="txtaddproduct">Cannot leave this field blank</div>
                 <!-- inp group end -->
+            </div>
+            <div class="inp-group new-product">
+                <div class="btn action-btn scan-btn add-product-btn" id="addNewProduct" data-type="addNewProduct">Add New Product</div>
             </div>
         </div>
 
@@ -270,14 +298,66 @@ $currentDate = date('Y-m-d');
                 <input type="text" placeholder="Enter GST Percentage" id="purchasegstpercentage">
             </div>
             <div class="form-row">
-                <input type="text" value="0" id="purchasesellingprice" placeholder="Enter Selling Price">
+                <input type="text" value="" id="purchasesellingprice" placeholder="Enter Selling Price">
                 <input type="text" placeholder="Enter Parlour Price" id="purchaseparlourprice">
             </div>
+            <div class="form-row">
+                <input type="text" placeholder="Enter Batch Number" id="purchasebatchnumber">
+            </div>
+            <button id="editGenerateBarcode" class="btn-primary">Generate</button>
             <button id="editProductPrice" class="btn-primary">Edit Price</button>
             <button id="cancelAddPrice" class="btn-secondary">Cancel</button>
             <div class="error-cont"></div>
 
         </div>
+    </div>
+
+    
+    <div class="popup-backdrop"></div>
+    <div class="popup-cont">
+        <div class="popup-header">
+            <p></p>
+            <div class="close-btn">
+                <img src="../assets/icons/close.svg" alt="close btn">
+            </div>
+        </div>
+
+        <div class="popup-body" id="qr-reader">
+            <div class="generate--cont">
+                <div class="barcode">
+                    <table>
+                        <tr>
+                            <th id="extraDetailsHeader1" style="font-size: 14px;font-weight: 800;" colspan="2"></th>
+                        </tr>
+                        <tr>
+                            <th id="extraDetailsHeader2" style="font-size: 16px;font-weight: 600;" colspan="2"></th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div id="batchNumberLeft" style="transform: rotate(-90deg);height: 10px;"></div>
+                            </td>
+                            <td>
+                                <img id="generatedBarcode" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="details" id="footerSellingPrice"></div>
+                            </td>
+                            <td>
+                                <div class="details" style="text-align: right;" id="footerParlourPrice"></div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="btn-cont">
+                    <div class="btn print-btn" id="printBtn">Print</div>
+                    <div class="btn print-btn" id="useCodeBtn">Use Code</div>
+                </div>
+
+            </div>
+        </div>
+
     </div>
 
     <script src="https://unpkg.com/html5-qrcode@2.0.9/dist/html5-qrcode.min.js"></script>
@@ -293,6 +373,8 @@ $currentDate = date('Y-m-d');
     <script src="../scripts/helperFunctions.js"></script>
     <script src="../scripts/validate.js"></script>
     <script src="./scripts/PurchaseTable.js"></script>
+    <script src="./scripts/popup.js"></script>
+    <script src="./scripts/barcodeGenerator.js"></script>
     <script src="./scripts/handlePopup.js"></script>
     <script src="./scripts/handleBarcodeScanner.js"></script>
 
@@ -325,6 +407,8 @@ $currentDate = date('Y-m-d');
             "purchaseNo": document.getElementById("txtpurchasenumber").value,
             "amount": 0,
             "id": 0,
+            "signedby":document.getElementById("txtpurchasesignedby").value,
+            "purchasetype":document.getElementById("ddlpurchasetype").value,
             "rows": []
         };
 
@@ -342,6 +426,8 @@ $currentDate = date('Y-m-d');
                     purchaseObject.amount = purchaseInvoiceTable.calculateNetTotal();
                     purchaseObject.purchaseNo = document.getElementById("txtpurchasenumber").value;
                     purchaseObject.id = purchaseId;
+                    purchaseObject.signedby = document.getElementById("txtpurchasesignedby").value;
+                    purchaseObject.purchasetype=document.getElementById("ddlpurchasetype").value;
                     purchaseObject.rows = purchaseInvoiceTable.invoiceRows;
 
                     var xmlhttp = new XMLHttpRequest();

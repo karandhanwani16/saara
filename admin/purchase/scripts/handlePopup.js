@@ -98,7 +98,7 @@ function populatePopup(product) {
     prices.forEach(price => {
         const option = document.createElement('option');
         option.value = price["product_prices_id"];
-        option.textContent = price["product_prices_cost_price"];
+        option.textContent = price["product_prices_cost_price"]+"-"+price["product_prices_batch_number"];
         productPriceSelect.appendChild(option);
     });
 
@@ -218,7 +218,7 @@ function AddPriceInDB() {
         productObject.gstpercentage = gstPercentage.value;
         productObject.sellingprice = sellingPrice.value;
         productObject.parlourprice = parlourPrice.value;
-        productObject.batchnumber = parlourPrice.value;
+        productObject.batchnumber = batchNumber.value;
         productObject.barcode = productBarcode.value;
         //productObject.rows = purchaseInvoiceTable.invoiceRows;
 

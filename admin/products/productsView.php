@@ -46,6 +46,7 @@
                             <th>ID</th>
                             <th>Select</th>
                             <th>Delete</th>
+                            <th>History</th>
                             <th>Category</th>
                             <th>Brand</th>
                             <th>Name</th>

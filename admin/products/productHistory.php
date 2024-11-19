@@ -40,10 +40,10 @@ $productId = $_GET["product_id"];
             margin-left: 12px;
             margin-bottom: 5px;
         }
+
         #ddlhistorytype {
             margin-left: 10px;
         }
-        
     </style>
 </head>
 
@@ -120,9 +120,22 @@ $productId = $_GET["product_id"];
     <script type="text/javascript" language="javascript">
         document.getElementById("ddlhistorytype").addEventListener("change", function (event) {
             const historyType = document.getElementById("ddlhistorytype").value;
+
+            // Hide both tables initially to avoid showing both at the same time
+            document.getElementById("purchase_history_data").classList.add("hidden");
+            document.getElementById("sales_history_data").classList.add("hidden");
+
+            // Destroy the current DataTable if it exists
+            if ($.fn.dataTable.isDataTable('#purchase_history_data')) {
+                $('#purchase_history_data').DataTable().clear().destroy();
+            }
+            if ($.fn.dataTable.isDataTable('#sales_history_data')) {
+                $('#sales_history_data').DataTable().clear().destroy();
+            }
+
+            // If Purchase History is selected
             if (historyType == "purchase") {
                 document.getElementById("purchase_history_data").classList.remove("hidden");
-                document.getElementById("sales_history_data").classList.add("hidden");
                 $(document).ready(function () {
                     var dataTable = $('#purchase_history_data').DataTable({
                         "processing": true,
@@ -135,12 +148,11 @@ $productId = $_GET["product_id"];
                         "drawCallback": function (oSettings) {
                         }
                     });
-
                 });
             }
 
+            // If Sales History is selected
             if (historyType == "sales") {
-                document.getElementById("purchase_history_data").classList.add("hidden");
                 document.getElementById("sales_history_data").classList.remove("hidden");
                 $(document).ready(function () {
                     var salesTable = $('#sales_history_data').DataTable({
@@ -154,10 +166,10 @@ $productId = $_GET["product_id"];
                         "drawCallback": function (oSettings) {
                         }
                     });
-
                 });
             }
-        });        
+        });
+
     </script>
 </body>
 

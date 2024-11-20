@@ -71,11 +71,11 @@ $redirected = isset($_GET['redirected']) && $_GET['redirected'] === 'true';
 
 <body>
 
-
     <div onclick="window.history.back()" class="back-btn"
         style="display: <?php echo $redirected ? 'block' : 'none'; ?>">
         <img src='../assets/icons/back.svg' alt=''>
     </div>
+
     <div class="alert--cont">
     </div>
 
@@ -116,25 +116,15 @@ $redirected = isset($_GET['redirected']) && $_GET['redirected'] === 'true';
 
                 <div class="barcode-options">
                     <div class="btn action-btn scan-btn" data-type="scan">Scan</div>
-                    <!-- <div class="btn action-btn generate-btn" data-type="generate">Generate</div> -->
                 </div>
 
                 <div class="error-text" data-id="txtbarcode">Cannot leave this field blank</div>
             </div>
             <!-- inp group end -->
-
-
         </div>
         <!-- input row end -->
 
         <div class="inp-row row-5 adj-5" style="justify-content: flex-start;gap: 24px;">
-            <!-- <div class="inp-group">
-                <div class="inp-label">Product Code</div>
-                <input type="text" class="inp required" value="1000110" id="txtcode" placeholder="product Code"
-                    data-id="txtcode" />
-                <div class="error-text" data-id="txtcode">Cannot leave this field blank</div>
-            </div> -->
-            <!-- inp group end -->
             <div class="inp-group">
                 <div class="inp-label">Product Description</div>
                 <input type="text" class="inp" id="txtdescription" placeholder="Product Description"
@@ -142,7 +132,12 @@ $redirected = isset($_GET['redirected']) && $_GET['redirected'] === 'true';
                 <div class="error-text" data-id="txtdescription">Cannot leave this field blank</div>
             </div>
             <!-- inp group end -->
-
+            <div class="inp-group">
+                <div class="inp-label">Product Minimum Stock</div>
+                <input type="text" class="inp" id="txtminstock" placeholder="Product Minimum Stock"
+                    data-id="txtminstock" />
+                <div class="error-text" data-id="txtminstock">Cannot leave this field blank</div>
+            </div>
         </div>
         <!-- input row end -->
 
@@ -190,7 +185,6 @@ $redirected = isset($_GET['redirected']) && $_GET['redirected'] === 'true';
 
         <!-- inp row end -->
 
-
         <div class="input-row">
             <div class="inp-group image-group">
 
@@ -212,7 +206,6 @@ $redirected = isset($_GET['redirected']) && $_GET['redirected'] === 'true';
             <input type="hidden" id="HiddenField1"">
         </div>
         <!-- inp row end -->
-
 
         <div class=" btn-row" style="margin-top: 16px;">
             <div class="primary-btn btn f-center submit--btn">Submit</div>
@@ -274,7 +267,6 @@ $redirected = isset($_GET['redirected']) && $_GET['redirected'] === 'true';
         </div>
     </div>
 
-
     <script src="https://unpkg.com/html5-qrcode@2.0.9/dist/html5-qrcode.min.js"></script>
     <script src="../scripts/helperFunctions.js"></script>
 
@@ -282,7 +274,6 @@ $redirected = isset($_GET['redirected']) && $_GET['redirected'] === 'true';
 
         const defaultBrand = "";
         const defaultCategory = "";
-
 
         let inputs = document.querySelectorAll("input.required");
         let dropdowns = document.querySelectorAll("select");
@@ -294,25 +285,19 @@ $redirected = isset($_GET['redirected']) && $_GET['redirected'] === 'true';
             "category": "",
             "barcode": "",
             "description": "",
+            "minstock": "",
             "prices": [],
             "images": []
         };
     </script>
 
     <script src="../scripts/validation.js"></script>
-
     <script src="./scripts/handlePrice.js"></script>
-
     <script src="./scripts/loadDropdownData.js"></script>
-
     <script src="./scripts/popup.js"></script>
-
     <script src="./scripts/barcodeScanner.js"></script>
-
     <script src="./scripts/barcodeGenerator.js"></script>
-
     <script src="./scripts/handleGstCalculations.js"></script>
-
     <script src="./scripts/multipleImageUpload.js"></script>
 
 
@@ -329,8 +314,8 @@ $redirected = isset($_GET['redirected']) && $_GET['redirected'] === 'true';
                 productObject.brand = document.getElementById("ddlbrand").value;
                 productObject.category = document.getElementById("ddlcategory").value;
                 productObject.barcode = document.getElementById("txtbarcode").value;
-                // productObject.code = document.getElementById("txtcode").value;
                 productObject.description = document.getElementById("txtdescription").value;
+                productObject.minstock = document.getElementById("txtminstock").value;
                 productObject.prices = priceStockArray;
 
                 var xmlhttp = new XMLHttpRequest();

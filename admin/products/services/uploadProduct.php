@@ -16,8 +16,8 @@ $name = $data["name"];
 $brand = $data["brand"];
 $category = $data["category"];
 $barcode = $data["barcode"];
-// $code = $data["code"];
 $description = $data["description"];
+$minstock = $data["minstock"];
 $prices = $data["prices"];
 $images = $data["images"];
 
@@ -30,7 +30,7 @@ try {
     $maximumProductId = getCurrentId("product_id", "products", $con);
     if (!isExist($name, "products", "product_name", $con)) {
 
-        $sql = "insert into products values(" . $maximumProductId . "," . $category . "," . $brand . ",'" . $name . "','" . $barcode . "','" . $description . "','" . getCurrentTimestamp() . "'," . $user_id . ",'" . getCurrentTimestamp() . "'," . $user_id . ")";
+        $sql = "insert into products values(" . $maximumProductId . "," . $category . "," . $brand . ",'" . $name . "','" . $barcode . "','" . $description . "','" . $minstock . "','" . getCurrentTimestamp() . "'," . $user_id . ",'" . getCurrentTimestamp() . "'," . $user_id . ")";
 
         if (mysqli_query($con, $sql)) {
             if (uploadProductPrices($maximumProductId, $prices,$con)) {

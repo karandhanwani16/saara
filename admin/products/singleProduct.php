@@ -161,13 +161,6 @@ function getProductPrices($productId, $con)
         <!-- input row end -->
 
         <div class="inp-row row-5 adj-5" style="justify-content: flex-start;gap: 24px;">
-            <!-- <div class="inp-group">
-                <div class="inp-label">Product Code</div>
-                <input type="text" class="inp required" value="<?php echo $productData["product_code"]; ?>" id="txtcode" placeholder="product Code"
-                    data-id="txtcode" />
-                <div class="error-text" data-id="txtcode">Cannot leave this field blank</div>
-            </div> -->
-            <!-- inp group end -->
             <div class="inp-group">
                 <div class="inp-label">Product Description</div>
                 <input type="text" class="inp" value="<?php echo $productData["product_description"]; ?>"
@@ -175,6 +168,11 @@ function getProductPrices($productId, $con)
                 <div class="error-text" data-id="txtdescription">Cannot leave this field blank</div>
             </div>
             <!-- inp group end -->
+            <div class="inp-group">
+                <div class="inp-label">Product Minimum Stock</div>
+                <input type="text" class="inp" value="<?php echo $productData["product_minimum_stock"]; ?>" id="txtminstock" placeholder="Product Minimum Stock" data-id="txtminstock" />
+                <div class="error-text" data-id="txtminstock">Cannot leave this field blank</div>
+            </div>
 
         </div>
         <!-- input row end -->
@@ -322,25 +320,19 @@ function getProductPrices($productId, $con)
             "category": "",
             "barcode": "",
             "description": "",
+            "minstock": "",
             "prices": [],
             "images": []
         };
     </script>
 
     <script src="../scripts/validation.js"></script>
-
     <script src="./scripts/handlePrice.js"></script>
-
     <script src="./scripts/loadDropdownData.js"></script>
-
     <script src="./scripts/popup.js"></script>
-
     <script src="./scripts/barcodeScanner.js"></script>
-
     <script src="./scripts/barcodeGenerator.js"></script>
-
     <script src="./scripts/handleGstCalculations.js"></script>
-
     <script src="./scripts/multipleImageUpload.js"></script>
 
     <script>
@@ -407,6 +399,7 @@ function getProductPrices($productId, $con)
                 productObject.category = document.getElementById("ddlcategory").value;
                 productObject.barcode = document.getElementById("txtbarcode").value;
                 productObject.description = document.getElementById("txtdescription").value;
+                productObject.minstock = document.getElementById("txtminstock").value;
                 productObject.prices = priceStockArray;
 
                 var xmlhttp = new XMLHttpRequest();

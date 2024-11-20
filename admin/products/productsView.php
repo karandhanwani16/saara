@@ -51,8 +51,8 @@
                             <th>Brand</th>
                             <th>Name</th>
                             <th>Barcode</th>
-                            <!-- <th>Batch</th> -->
                             <th>Description</th>
+                            <th>Minimum Stock</th>
                             <th>Created By</th>
                             <th>Updated By</th>
                         </tr>
@@ -62,7 +62,6 @@
             </div>
         </div>
     </div>
-
 
     <!-- <div class="popup-backdrop"></div>
     <div class="popup-cont">
@@ -115,12 +114,7 @@
         </div>
     </div> -->
 
-
     <script src="../scripts/helperFunctions.js"></script>
-    <!-- <script src="./scripts/viewBarcodeGenerator.js"></script> -->
-
-    <!-- <script src="./scripts/viewProductDetails.js"></script>
-    <script src="./scripts/viewPopup.js"></script> -->
 
     <script type="text/javascript" language="javascript">
         $(document).ready(function () {
@@ -146,14 +140,6 @@
                             }
                         });
                     });
-                    // Print Buttons Functionality 
-                    // let printBtns = document.querySelectorAll(".print-barcode-btn");
-                    // printBtns.forEach(printBtn => {
-                    //     printBtn.addEventListener("click", e => {
-                    //         let id = printBtn.attributes["data-id"].value;
-                    //         printBarcode(printBtn, id);
-                    //     });
-                    // });
 
                 }
             });
@@ -176,11 +162,6 @@
                 xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
                 xmlhttp.send("id=" + id);
             }
-
-
-            // function printBarcode(printBtn, id) {
-            //     generateBarcodeMain(id);
-            // }
 
         });
     </script>

@@ -127,7 +127,6 @@
                 const xhr = new XMLHttpRequest();
                 xhr.open('POST', './services/getSaleInvoice.php', true);
                 xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-                // xhr.send(`saleId=${saleId}`);
                 xhr.send(`saleId=${saleId}`);
                 xhr.onload = () => {
                     if (xhr.status == 200) {

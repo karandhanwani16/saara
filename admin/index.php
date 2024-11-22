@@ -84,6 +84,13 @@ $currentEmail = getCurrentEmail($user_id, $con);
                     </a>
                 </li>
 
+                <li class="menu-item">
+                    <a class="menu-item-main f-link" data-link="./order/orderForm.php">
+                        <img src="assets/icons/dashboard.svg" alt="">
+                        <div class="list-item-value">Order Form</div>
+                    </a>
+                </li>
+
                 <li class="menu-item ddl <?php echo $user_type == "employee" ? "hidden" : ""; ?>">
                     <div class="menu-item-main">
                         <img src="assets/icons/catalogue.svg" alt="">

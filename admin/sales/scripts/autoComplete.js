@@ -1,9 +1,9 @@
-const searchInput = document.querySelector('#customer-name');
+const searchInput = document.querySelector('#customer-phone');
 const autoCompleteCont = document.querySelector('.auto--complete');
 const resultCont = document.querySelector('.result--cont');
 let isSearchOpen = false;
 let customerEmail = document.querySelector("#customer-email");
-let customerPhone = document.querySelector("#customer-phone");
+let customerName = document.querySelector("#customer-name");
 
 function loadSearchResult(data) {
     resultCont.innerHTML = '';
@@ -17,7 +17,7 @@ function loadSearchResult(data) {
             searchInput.value = e.target.innerText;
             resultCont.classList.add('hidden');
             customerEmail.value = "";
-            customerPhone.value = "";
+            customerName.value = "";
             loadCustomerDetails(e.target.innerText);
             hideSearchInput();
         })
@@ -26,8 +26,8 @@ function loadSearchResult(data) {
     })
 }
 
-async function loadCustomerDetails(customerName) {
-    const data = await getCustomerDetails(customerName);
+async function loadCustomerDetails(customerPhone) {
+    const data = await getCustomerDetails(customerPhone);
     if (data.status === "success") {
         loadCustomerDetailsView(data.data);
     } else {
@@ -37,15 +37,15 @@ async function loadCustomerDetails(customerName) {
 
 function loadCustomerDetailsView(data) {
     customerEmail.value = data.email;
-    customerPhone.value = data.phone;
+    customerName.value = data.name;
 }
 
-function getCustomerDetails(customerName) {
+function getCustomerDetails(customerPhone) {
     return new Promise((resolve, reject) => {
         fetch("./services/loadCustomerDetails.php", {
             method: "POST",
             body: JSON.stringify({
-                name: customerName
+                phone: customerPhone
             })
         })
             .then(response => {
@@ -93,7 +93,7 @@ function hideSearchInput() {
 
 searchInput.addEventListener('keyup', e => {
     customerEmail.value = "";
-    customerPhone.value = "";
+    customerName.value = "";
     fetchCustomerData(e.target.value);
 })
 

@@ -113,17 +113,14 @@ const handleButtonVisibility = (step) => {
     for (const button in buttonArrangement) {
         const buttonElement = document.getElementById(button);
         buttonElement.style.display = buttonArrangement[button].display ? 'flex' : 'none';
-        // buttonElement.textContent = buttonArrangement[button].text;
         buttonElement.innerHTML = `<img src="${buttonIcons[button]}" alt="${buttonArrangement[button].text}" /> ${buttonArrangement[button].text}`;
     }
 }
 
 const downloadInvoice = async (saleId) => {
-    // create a pdf using xmlhttprequest
     const xhr = new XMLHttpRequest();
     xhr.open('POST', './services/getSaleInvoice.php', true);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    // xhr.send(`saleId=${saleId}`);
     xhr.send(`saleId=${saleId}`);
     xhr.onload = () => {
         if (xhr.status == 200) {
@@ -146,7 +143,6 @@ const downloadInvoice = async (saleId) => {
             console.log('Error: ' + xhr.status);
         }
     }
-
 }
 
 hideHiddenSteps();
@@ -157,9 +153,7 @@ retryBtn.addEventListener('click', () => {
 });
 
 finalizeBtn.addEventListener('click', async () => {
-
     const response = isValidToProceed(currentStep);
-
     calculateOtherDetails(currentStep);
 
     if (response.status == "success") {
@@ -172,7 +166,6 @@ finalizeBtn.addEventListener('click', async () => {
     } else {
         showAlert(response.message, "error");
     }
-
 });
 
 goBackBtn.addEventListener('click', () => {
@@ -220,16 +213,10 @@ const isCustomerDetailsValid = () => {
     const discount = document.getElementById('discount');
     const discountType = document.getElementById('discount-type');
 
-    const cashAmount = document.getElementById('amount-cash');
-    const upiAmount = document.getElementById('amount-upi');
-    const cardAmount = document.getElementById('amount-card');
-
-    if (discountType.value == 'percentage') {
-        if (discount.value > 100) {
-            return {
-                "status": "error",
-                "message": "Discount cannot be greater than 100%"
-            }
+    if (discountType.value == 'percentage' && discount.value > 100) {
+        return {
+            "status": "error",
+            "message": "Discount cannot be greater than 100%"
         }
     }
 
@@ -254,29 +241,34 @@ const isCustomerDetailsValid = () => {
 }
 
 const isPaymentDetailsValid = () => {
-    const cashAmount = document.getElementById('amount-cash');
-    const upiAmount = document.getElementById('amount-upi');
-    const cardAmount = document.getElementById('amount-card');
-    const cardCharges = document.getElementById('card-charges');
+    const cashAmount = parseFloat(document.getElementById('amount-cash').value) || 0;
+    const upiAmount = parseFloat(document.getElementById('amount-upi').value) || 0;
+    const cardAmount = parseFloat(document.getElementById('amount-card').value) || 0;
+    const cardCharges = parseFloat(document.getElementById('card-charges').value) || 0;
 
-
-    if (cashAmount.value == '' || upiAmount.value == '' || cardAmount.value == '') {
+    if (isNaN(cashAmount) || isNaN(upiAmount) || isNaN(cardAmount)) {
         return {
             "status": "error",
-            "message": "Please fill all the fields"
-        }
-    }
-    if ((parseFloat(cashAmount.value) + parseFloat(upiAmount.value) + parseFloat(cardAmount.value) + parseFloat(cardCharges.value)) != totalDetails.netTotal) {
-        return {
-            "status": "error",
-            "message": "Please Enter Correct Amount"
+            "message": "Please enter valid amounts"
         }
     }
 
-    paymentDetails.cashAmount = cashAmount.value;
-    paymentDetails.upiAmount = upiAmount.value;
-    paymentDetails.cardAmount = cardAmount.value;
-    paymentDetails.cardCharges = cardCharges.value;
+    const totalPaid = cashAmount + upiAmount + cardAmount;
+    const totalWithCharges = totalPaid + cardCharges;
+    const roundedTotalPaid = Math.round(totalWithCharges);
+    
+    if (Math.abs(roundedTotalPaid - totalDetails.netTotal) > 1) {
+        return {
+            "status": "error",
+            "message": "Total payment amount must match the order total"
+        }
+    }
+
+    paymentDetails.cashAmount = cashAmount.toFixed(2);
+    paymentDetails.upiAmount = upiAmount.toFixed(2);
+    paymentDetails.cardAmount = cardAmount.toFixed(2);
+    paymentDetails.cardCharges = cardCharges.toFixed(2);
+    
     return {
         "status": "success",
         "message": "Payment details are valid"
@@ -290,8 +282,6 @@ const calculateOtherDetails = (currentStep) => {
 }
 
 const calculatePaymentDetails = () => {
-    // for every product in the sale table calculate sale price * quantity - cgst amount - sgst amount - igst amount - discount amount
-
     const totals = saleTable.rows.reduce((acc, saleItem) => {
         const price = parseFloat(saleItem.price);
         const quantity = saleItem.quantity;
@@ -327,42 +317,36 @@ const calculatePaymentDetails = () => {
         netTotal: 0
     });
 
-    const finalDiscount = calculateFinalDiscount(totals.grossTotal + totals.sGstTotal + totals.cGstTotal + totals.iGstTotal - totals.discountTotal, saleDetails.discount, saleDetails.discountType);
-
-    totals.netTotal = totals.netTotal - finalDiscount;
-
-    // const cardCharges = parseFloat(document.getElementById('cardCharges').textContent.replace('Rs. ', '')) || 0;
-    // totals.netTotal = totals.netTotal;
-
-    const roundOff = Number((parseFloat(totals.netTotal) - parseInt(totals.netTotal)).toFixed(2));
-    // const netTotal = Number((totals.netTotal + roundOff).toFixed(2));
-    const netTotal = roundOff > 0.5 ? parseInt(totals.netTotal) + 1 : parseInt(totals.netTotal);
-
+    const subTotal = totals.grossTotal + totals.sGstTotal + totals.cGstTotal + totals.iGstTotal - totals.discountTotal;
+    const finalDiscount = calculateFinalDiscount(subTotal, saleDetails.discount, saleDetails.discountType);
+    const cardCharges = parseFloat(document.getElementById('card-charges').value) || 0;
+    const netAmount = totals.netTotal - finalDiscount + cardCharges;
+    const roundedNetAmount = Math.round(netAmount);
+    const roundOff = roundedNetAmount - netAmount;
 
     document.getElementById('orderTotalBeforeTax').textContent = `Rs. ${totals.grossTotal}`;
     document.getElementById('sGstTotal').textContent = `Rs. ${totals.sGstTotal}`;
     document.getElementById('cGstTotal').textContent = `Rs. ${totals.cGstTotal}`;
     document.getElementById('iGstTotal').textContent = `Rs. ${totals.iGstTotal}`;
-    document.getElementById('totalBeforeDiscount').textContent = `Rs. ${(totals.grossTotal + totals.sGstTotal + totals.cGstTotal + totals.iGstTotal).toFixed(2)}`;
+    document.getElementById('totalBeforeDiscount').textContent = `Rs. ${subTotal.toFixed(2)}`;
     document.getElementById('finalDiscount').textContent = `Rs. ${finalDiscount.toFixed(2)}`;
     document.getElementById('discountTotal').textContent = `Rs. ${totals.discountTotal}`;
-    document.getElementById('roundOff').textContent = `Rs. ${roundOff > 0.5 ? roundOff : -1 * roundOff}`;
-    document.getElementById('totalAfterDiscount').textContent = `Rs. ${netTotal}`;
+    document.getElementById('cardCharges').textContent = `Rs. ${cardCharges.toFixed(2)}`;
+    document.getElementById('roundOff').textContent = `Rs. ${roundOff.toFixed(2)}`;
+    document.getElementById('totalAfterDiscount').textContent = `Rs. ${roundedNetAmount}`;
 
-    // Update total details object
     totalDetails.grossTotal = totals.grossTotal;
     totalDetails.sGstTotal = totals.sGstTotal;
     totalDetails.cGstTotal = totals.cGstTotal;
     totalDetails.iGstTotal = totals.iGstTotal;
-    totalDetails.totalBeforeDiscount = (totals.grossTotal + totals.sGstTotal + totals.cGstTotal + totals.iGstTotal).toFixed(2);
+    totalDetails.totalBeforeDiscount = subTotal.toFixed(2);
     totalDetails.discountTotal = totals.discountTotal;
     totalDetails.finalDiscount = finalDiscount.toFixed(2);
-    totalDetails.netTotal = netTotal;
-    totalDetails.roundOff = roundOff > 0.5 ? roundOff : -1 * roundOff;
+    totalDetails.netTotal = roundedNetAmount;
+    totalDetails.roundOff = roundOff.toFixed(2);
 }
 
 const createNewSale = async () => {
-
     const skeletonCont = document.getElementById('skeletonCont');
     const retryMainCont = document.getElementById('retryMainCont');
     const orderSummaryBtns = document.getElementById('orderSummaryBtns');
@@ -371,21 +355,19 @@ const createNewSale = async () => {
     retryMainCont.classList.add('hidden');
     orderSummaryBtns.classList.add('hidden');
 
-    // create a new sale in the database using xmlhttprequest
     const xhr = new XMLHttpRequest();
-
     xhr.open('POST', currentFile == 'salesUpload.php' ? './services/salesUpload.php' : './services/updateSales.php', true);
-
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
-    const data = currentFile == 'salesUpload.php' ? `saleDetails=${JSON.stringify(saleDetails)}&paymentDetails=${JSON.stringify(paymentDetails)}&saleRows=${JSON.stringify(saleTable.rows)}&totalDetails=${JSON.stringify(totalDetails)}` : `saleId=${currentSaleId}&saleDetails=${JSON.stringify(saleDetails)}&paymentDetails=${JSON.stringify(paymentDetails)}&saleRows=${JSON.stringify(saleTable.rows)}&totalDetails=${JSON.stringify(totalDetails)}`;
+    const data = currentFile == 'salesUpload.php' ? 
+        `saleDetails=${JSON.stringify(saleDetails)}&paymentDetails=${JSON.stringify(paymentDetails)}&saleRows=${JSON.stringify(saleTable.rows)}&totalDetails=${JSON.stringify(totalDetails)}` :
+        `saleId=${currentSaleId}&saleDetails=${JSON.stringify(saleDetails)}&paymentDetails=${JSON.stringify(paymentDetails)}&saleRows=${JSON.stringify(saleTable.rows)}&totalDetails=${JSON.stringify(totalDetails)}`;
 
     xhr.send(data);
 
     xhr.onload = () => {
         if (xhr.status == 200) {
             const response = JSON.parse(xhr.responseText);
-
             currentSaleId = response.details.saleId;
 
             document.getElementById('orderId').textContent = response.details.saleId;
@@ -397,20 +379,21 @@ const createNewSale = async () => {
             const upiAmount = parseFloat(response.details.upiAmount);
             const cardAmount = parseFloat(response.details.cardAmount);
 
-            document.getElementById('paymentMode').textContent = document.getElementById('paymentMode').textContent =
-                cashAmount > 0 && upiAmount > 0 ? 'Cash,UPI' : cashAmount > 0 ? 'Cash' : upiAmount > 0 ? 'UPI' : cardAmount > 0 ? 'Card' : '';
+            document.getElementById('paymentMode').textContent = 
+                cashAmount > 0 && upiAmount > 0 ? 'Cash,UPI' : 
+                cashAmount > 0 ? 'Cash' : 
+                upiAmount > 0 ? 'UPI' : 
+                cardAmount > 0 ? 'Card' : '';
 
             document.getElementById('orderTotal').textContent = response.details.total;
 
             if (response.status == 'success') {
                 showAlert('Sale created successfully', 'success');
-                //show download btn and go back btn
                 downloadInvoiceBtnRef.style.display = 'flex';
                 goBackBtn.style.display = 'flex';
             } else {
                 showAlert('Error: ' + response.message, 'error');
                 retryMainCont.classList.remove('hidden');
-                //hide download btn and go back btn
                 downloadInvoiceBtnRef.style.display = 'none';
                 goBackBtn.style.display = 'none';
             }
@@ -424,24 +407,19 @@ const createNewSale = async () => {
 }
 
 const calculateFinalDiscount = (total, discount, discountType) => {
-    const finalDiscount = discountType == 'percentage' ? total * (discount / 100) : discount;
-    return parseFloat(finalDiscount);
+    return discountType == 'percentage' ? total * (discount / 100) : parseFloat(discount);
 }
 
-let previousCardCharges = 0;  // Variable to store the previous card charges
-
-document.getElementById('amount-card').addEventListener('input', function () {
-    const cardPayment = parseFloat(this.value) || 0; 
+document.getElementById('amount-card').addEventListener('input', function() {
+    const cardPayment = parseFloat(this.value) || 0;
     const cardCharges = (cardPayment * 0.02).toFixed(2);
     
     document.getElementById('card-charges').value = cardCharges;
-    document.getElementById('cardCharges').textContent = `Rs. ${cardCharges}`;
-
-    totalDetails.netTotal = parseFloat((totalDetails.netTotal - previousCardCharges + parseFloat(cardCharges)).toFixed(2));
-
-    document.getElementById('totalAfterDiscount').textContent = `Rs. ${totalDetails.netTotal}`;
-
-    previousCardCharges = parseFloat(cardCharges);
-
+    calculatePaymentDetails(); // Recalculate totals when card amount changes
     isPaymentDetailsValid();
 });
+
+// document.getElementById('card-charges').addEventListener('input', function() {
+//     calculatePaymentDetails(); // Recalculate totals when card charges change manually
+//     isPaymentDetailsValid();
+// });

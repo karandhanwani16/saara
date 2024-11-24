@@ -15,14 +15,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($requestData['value'])) {
         $value = $requestData['value'];
 
-        $query = "select distinct customer_name from customers where customer_name like '%" . $value . "%'";
+        $query = "select distinct customer_phone from customers where customer_phone like '%" . $value . "%'";
 
         $result = $con->query($query);
         $rowCount = $result->num_rows;
 
         if ($rowCount > 0) {
             while ($row = $result->fetch_assoc()) {
-                $response[] = $row['customer_name'];
+                $response[] = $row['customer_phone'];
             }
         }
 

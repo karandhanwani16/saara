@@ -12,6 +12,53 @@
     <link rel="stylesheet" href="./styles/popup.css">
     <link rel="stylesheet" href="./styles/skeleton.css">
     <link rel="stylesheet" href="./styles/retry.css">
+    <style>
+        .auto--complete {
+            position: relative;
+        }
+
+        .auto--complete .search--cont {
+            position: relative;
+        }
+
+        .auto--complete .inp-label,
+        .auto--complete .search--cont .inp {
+            position: absolute !important;
+            top: -4px !important;
+            left: 0;
+        }
+
+        .auto--complete .inp-label {
+            top: -32px !important;
+        }
+
+
+
+        .search--cont .result--cont {
+            position: absolute;
+            top: 33px;
+            left: 0px;
+            width: 100%;
+            background: #fff;
+            border-bottom: 2px solid #000;
+            border-left: 2px solid #000;
+            border-right: 2px solid #000;
+            border-bottom-right-radius: 10px;
+            border-bottom-left-radius: 10px;
+            z-index: 9;
+            overflow: hidden;
+            box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.4);
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .auto--complete--focused .inp {
+            background-color: #fff !important;
+            border-bottom: 1px solid #aaa !important;
+            border-bottom-left-radius: 0px !important;
+            border-bottom-right-radius: 0px !important;
+        }
+    </style>
 </head>
 
 <body>
@@ -86,14 +133,14 @@
                 <input type="date" id="sales-date" name="sales-date" value="<?php echo date('Y-m-d'); ?>">
 
                 <div class="auto--complete">
-                    <label for="customer-name">Customer Name</label>
+                    <label for="customer-phone">Customer Phone</label>
                     <div class="search--cont">
-                        <input type="text" id="customer-name" name="customer-name" placeholder="Customer Name">
+                        <input type="tel" id="customer-phone" name="customer-phone" placeholder="Customer Phone">
                         <div class="result--cont hidden"></div>
                     </div>
                 </div>
-                <label for="customer-phone">Customer Phone</label>
-                <input type="tel" id="customer-phone" name="customer-phone" placeholder="Customer Phone">
+                <label for="customer-name">Customer Name</label>
+                <input type="text" id="customer-name" name="customer-name" placeholder="Customer Name">
 
                 <label for="customer-email">Customer Email</label>
                 <input type="email" id="customer-email" name="customer-email" placeholder="Customer Email">
@@ -145,12 +192,12 @@
                     <span id="finalDiscount">Rs. -</span>
                 </div>
                 <div class="payment-row">
-                    <span>Round Off</span>
-                    <span id="roundOff">Rs. -</span>
-                </div>
-                <div class="payment-row">
                     <span>Card Charges</span>
                     <span id="cardCharges">Rs. -</span>
+                </div>
+                <div class="payment-row">
+                    <span>Round Off</span>
+                    <span id="roundOff">Rs. -</span>
                 </div>
                 <div class="payment-row">
                     <span>Total</span>

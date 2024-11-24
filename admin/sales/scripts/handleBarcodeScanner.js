@@ -202,7 +202,7 @@ const populatePopup = (product) => {
     prices.forEach(price => {
         const option = document.createElement('option');
         option.value = price["product_prices_id"];
-        option.textContent = price["product_prices_selling_price"]+"-"+price["product_prices_batch_number"];
+        option.textContent = price["product_prices_selling_price"]+" -"+price["product_prices_batch_number"];
         productPriceSelect.appendChild(option);
     });
 

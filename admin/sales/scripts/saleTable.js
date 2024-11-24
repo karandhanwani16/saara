@@ -151,7 +151,6 @@ class SaleTable {
     }
 
     showEditPopup(row) {
-        debugger;
         const editProduct = document.getElementById("editProduct");
         const editPopup = document.getElementById("editPopup");
         const editPopupBackground = document.getElementById("editPopupBackground");
@@ -207,7 +206,7 @@ class SaleTable {
         row.prices.forEach(price => {
             const option = document.createElement('option');
             option.value = price["product_prices_id"];
-            option.textContent = price["product_prices_selling_price"]+"-"+price["product_prices_batch_number"];
+            option.textContent = price["product_prices_selling_price"] + " - " + price["product_prices_batch_number"];
             editProductPriceSelect.appendChild(option);
         });
 
@@ -231,13 +230,6 @@ class SaleTable {
             const priceId = parseInt(e.target.value);
             const editPrice = row.prices.find(p => p["product_prices_id"] === priceId);
             this.addQuantity(editPrice["product_prices_stock"], editQuantitySelect);
-            // const editQuantity = parseInt(editPrice["product_prices_stock"]) >= 10 ? 10 : parseInt(editPrice["product_prices_stock"]);
-            // for (let i = 1; i <= editQuantity; i++) {
-            //     const option = document.createElement('option');
-            //     option.value = i;
-            //     option.textContent = i;
-            //     editQuantitySelect.appendChild(option);
-            // }
         });
 
 
@@ -247,6 +239,7 @@ class SaleTable {
 
 
         editProduct.addEventListener("click", () => {
+            debugger;
             // add all the condtions
             if (editProductPrice.value == '' || editQuantity.value == '' || isNaN(editDiscount.value) || editDiscountType.value == '') {
                 addError(document.querySelector('#editContent .error-cont'), "Please fill all the fields");
@@ -263,6 +256,7 @@ class SaleTable {
     }
 
     editProduct(id, price, quantity, discount, discountType, isIGST) {
+        debugger;
         this.rows = this.rows.map(r => {
             if (r.id === id) {
                 r.price = r.prices.find(p => p["product_prices_id"].toString() === price.toString())["product_prices_selling_price"];
@@ -270,7 +264,18 @@ class SaleTable {
                 r.discount = discount;
                 r.discountType = discountType;
                 r.isIGST = isIGST;
-                r.total = this.calculateTotal(r.price, r.sGstAmount, r.cGstAmount, r.igstAmount, r.quantity, r.discount, r.discountType);
+                const gstPercentage = parseFloat(r.gstPercentage); 
+                const sgst = isIGST ? 0 : gstPercentage / 2;
+                const cgst = isIGST ? 0 : gstPercentage / 2;
+                const igst = isIGST ? gstPercentage : 0;
+
+                r.sGstAmount = (r.price * (sgst / 100)).toFixed(2);
+                r.cGstAmount = (r.price * (cgst / 100)).toFixed(2);
+                r.igstAmount = (r.price * (igst / 100)).toFixed(2);
+                r.priceBeforeTax = (r.price - r.sGstAmount - r.cGstAmount - r.igstAmount).toFixed(2);
+                console.log(r.priceBeforeTax);
+                r.total = this.calculateTotal(r.priceBeforeTax, r.sGstAmount, r.cGstAmount, r.igstAmount, r.quantity, r.discount, r.discountType);
+                console.log(r.total);
             }
             return r;
         });
@@ -286,7 +291,7 @@ class SaleTable {
     }
 
     calculateTotal(grossPrice, sgst, cgst, igst, quantity, discount, discountType) {
-
+        debugger;
         const total = Number(grossPrice) + Number(sgst) + Number(cgst) + Number(igst);
         const subtotal = total * Number(quantity);
 

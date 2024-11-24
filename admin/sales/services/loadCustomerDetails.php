@@ -4,7 +4,7 @@ require ("../../services/config.php");
 
 $response = new \stdClass();
 $response->email = "";
-$response->phone = "";
+$response->name = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Get the raw POST data
@@ -14,10 +14,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $requestData = json_decode($postData, true);
 
     // Check if required data is present
-    if (isset($requestData['name'])) {
-        $name = $requestData['name'];
+    if (isset($requestData['phone'])) {
+        $phone = $requestData['phone'];
 
-        $query = "select customer_email,customer_phone from customers where customer_name = '" . $name . "' order by customer_id desc limit 1";
+        $query = "select customer_email,customer_name from customers where customer_phone = '" . $phone . "' order by customer_id desc limit 1";
 
         $result = $con->query($query);
         $rowCount = $result->num_rows;
@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($rowCount > 0) {
             $row = $result->fetch_assoc();
             $response->email = $row['customer_email'];
-            $response->phone = $row['customer_phone'];
+            $response->name = $row['customer_name'];
         }
 
     }

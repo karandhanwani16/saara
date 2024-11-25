@@ -142,6 +142,7 @@ try {
                     <p>Product Wise Discount: <b>Rs. " . moneyFormatIndia($saleData['sale_discount_amount']) . "</b></p>
                     <p>Final Discount: <b>Rs. " . moneyFormatIndia($saleData['sale_final_discount_amount']) . "</b></p>
                     <p>Round Off: <b>Rs. " . moneyFormatIndia($saleData['sale_roundoff']) . "</b></p>
+                    <p>Card Charges: <b>Rs. " . moneyFormatIndia($saleData['card_charges']) . "</b></p>
                     <p>Final Amount: <b>Rs. " . moneyFormatIndia($saleData['sale_net_amount']) . "</b></p>
                 </div>
                 <p style='text-align:center; font-size:12px; margin-top:20px;'>Thanks for shopping with us!</p>
